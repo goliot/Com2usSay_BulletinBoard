@@ -25,6 +25,8 @@ public class SidePanel : BasePanel
         _backButton.onClick.AddListener(() => UIManager.Instance.ClosePanel());
         _logOutButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("Login"));
         _recentPostButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("RecentPost"));
+
+        _isInitialized = true;
     }
 
     private void OnUnregisterClicked()
