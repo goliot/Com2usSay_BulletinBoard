@@ -1,105 +1,52 @@
-using Firebase;
-using Firebase.Extensions;
-using Firebase.Auth;
-using Firebase.Firestore;
-using UnityEngine;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using System;
-
 
 public class AccountManager : Singleton<AccountManager>
 {
-    private FirebaseAuth _auth => FirebaseInitialize.Auth;
+    public event Action OnLoginSuccess;
+    public event Action OnLogout;
 
-    public void Register(Account account)
+    private AccountRepository _repository = new AccountRepository();
+
+    public AccountDTO MyAccount => _repository.MyAccount;
+
+    public async Task<bool> RegisterAsync(string email, string nickname, string password, Action<string> onFail = null)
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(account.Email, account.Password).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError($"회원가입에 실패했습니다. : {task.Exception.Message}");
-                return;
-            }
-
-            // Firebase user has been created.
-            AuthResult result = task.Result;
-            Debug.Log($"회원가입에 성공했습니다.: {result.User.DisplayName} ({result.User.UserId})");
-
-            InitialNicknameChange(result.User, account.Nickname);
-        });
+        var (success, errorMessage) = await _repository.RegisterAsync(email, nickname, password);
+        if (!success)
+        {
+            onFail?.Invoke(errorMessage);
+        }
+        return success;
     }
 
-    /*private void ChangeMyNickname(Account account, string newNickname)
+    public async Task<bool> LoginAsync(string email, string password, Action<string> onFail = null)
     {
-        if(account.Email != GetMyProfile().Email)
+        var (success, errorMessage) = await _repository.LoginAsync(email, password);
+        if (success)
         {
-            return;
+            OnLoginSuccess?.Invoke();
         }
-        FirebaseUser user = _auth.CurrentUser;
-
-        UserProfile profile = new UserProfile
+        else
         {
-            DisplayName = newNickname,
-        };
-        user.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception);
-                return;
-            }
-
-            Debug.Log("닉네임 변경에 성공했습니다.");
-        });
-    }*/
-
-    private void InitialNicknameChange(FirebaseUser user, string nickname)
-    {
-        if (user == null)
-        {
-            return;
+            onFail?.Invoke(errorMessage);
         }
-
-        UserProfile profile = new UserProfile
-        {
-            DisplayName = nickname,
-        };
-        user.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception);
-                return;
-            }
-
-            Debug.Log("닉네임 변경에 성공했습니다.");
-        });
+        return success;
     }
 
-    public void Login(Account account)
+    public void Logout()
     {
-        _auth.SignInWithEmailAndPasswordAsync(account.Email, account.Password).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError($"로그인에 실패했습니다.: {task.Exception.Message}");
-                return;
-            }
-
-            AuthResult result = task.Result;
-            Debug.Log($"로그인 성공 : {result.User.DisplayName} ({result.User.UserId})");
-        });
+        _repository.Logout();
+        OnLogout?.Invoke();
     }
 
-    public Account GetMyProfile()
+    public async Task<bool> ChangeMyNicknameAsync(string newNickname, Action<string> onFail = null)
     {
-        FirebaseUser user = _auth.CurrentUser;
-        if (user == null)
+        var (success, errorMessage) = await _repository.ChangeMyNicknameAsync(newNickname);
+        if (!success)
         {
-            return null;
+            onFail?.Invoke(errorMessage);
         }
-
-        string nickname = user.DisplayName;
-        string email = user.Email;
-
-        Account account = new Account(email, nickname, "confidential");
-
-        return account;
+        return success;
     }
 }
