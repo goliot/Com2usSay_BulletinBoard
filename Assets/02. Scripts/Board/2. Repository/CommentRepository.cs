@@ -9,27 +9,27 @@ public class CommentRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task AddComment(string postId, Comment comment)
+    public async Task AddComment(PostDTO post, CommentDTO comment)
     {
-        var commentsRef = _db.Collection("Posts").Document(postId).Collection("Comments");
+        var commentsRef = _db.Collection("Posts").Document(post.PostId).Collection("Comments");
         var newCommentRef = commentsRef.Document();
         await newCommentRef.SetAsync(comment);
     }
 
-    public async Task<List<Comment>> GetComments(string postId)
+    public async Task<List<CommentDTO>> GetComments(PostDTO post)
     {
-        var commentsSnapshot = await _db.Collection("Posts").Document(postId).Collection("Comments")
+        var commentsSnapshot = await _db.Collection("Posts").Document(post.PostId).Collection("Comments")
                                         .OrderBy("CreatedAt").GetSnapshotAsync();
 
-        List<Comment> comments = new List<Comment>();
+        List<CommentDTO> comments = new List<CommentDTO>();
         foreach (var doc in commentsSnapshot.Documents)
-            comments.Add(doc.ConvertTo<Comment>());
+            comments.Add(doc.ConvertTo<Comment>().ToDto());
 
         return comments;
     }
 
-    public async Task DeleteComment(string postId, string commentId)
+    public async Task DeleteComment(PostDTO post, CommentDTO comment)
     {
-        await _db.Collection("Posts").Document(postId).Collection("Comments").Document(commentId).DeleteAsync();
+        await _db.Collection("Posts").Document(post.PostId).Collection("Comments").Document(comment.CommentId).DeleteAsync();
     }
 }

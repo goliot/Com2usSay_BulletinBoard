@@ -23,19 +23,19 @@ public class Post
 
     public Post(string postId, string title, string content, string authorId)
     {
-        if(string.IsNullOrEmpty(postId))
+        if (string.IsNullOrEmpty(postId))
         {
             throw new Exception("문서 ID가 비었습니다.");
         }
-        if(string.IsNullOrEmpty(title))
+        if (string.IsNullOrEmpty(title))
         {
             throw new Exception("제목이 비었습니다.");
         }
-        if(string.IsNullOrEmpty(content))
+        if (string.IsNullOrEmpty(content))
         {
             throw new Exception("내용이 비었습니다.");
         }
-        if(string.IsNullOrEmpty(authorId))
+        if (string.IsNullOrEmpty(authorId))
         {
             throw new Exception("작성자 Id가 비었습니다.");
         }
@@ -51,5 +51,18 @@ public class Post
     public void AddComment(Comment comment)
     {
         CommentList.Add(comment);
+    }
+
+    public void DeleteComment(CommentDTO comment)
+    {
+        if (comment == null || string.IsNullOrEmpty(comment.CommentId))
+            return;
+
+        CommentList.RemoveAll(c => c.CommentId == comment.CommentId);
+    }
+
+    public PostDTO ToDto()
+    {
+        return new PostDTO(this);
     }
 }

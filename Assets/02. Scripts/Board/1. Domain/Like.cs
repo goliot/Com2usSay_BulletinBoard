@@ -7,7 +7,7 @@ public class Like
     [FirestoreProperty]
     private List<string> _likedUserIds { get; set; } = new List<string>();
 
-    public HashSet<string> LikedUserIds { get; private set; } = new HashSet<string>();
+    public HashSet<string> LikedUserIds { get; private set; }
 
     public int LikeCount => _likedUserIds.Count;
 
@@ -23,14 +23,6 @@ public class Like
     public void SyncHashSet()
     {
         LikedUserIds = new HashSet<string>(_likedUserIds);
-    }
-
-    public void AddLike(string userId)
-    {
-        if (IsLikedBy(userId)) return;
-
-        _likedUserIds.Add(userId);
-        LikedUserIds.Add(userId);
     }
 
     public bool IsLikedBy(string userId)

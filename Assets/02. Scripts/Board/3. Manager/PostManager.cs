@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 public class PostManager : Singleton<PostManager>
 {
     private readonly PostRepository _postRepository = new PostRepository();
-    public PostDTO CurrentPost { get; private set; }
+
+    private Post _currentPost;
+    public PostDTO CurrentPost;
 
     public async Task CreatePost(string title, string content)
     {
