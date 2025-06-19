@@ -21,7 +21,7 @@ public class LikeRepository
         var snapshot = await likeDocRef.GetSnapshotAsync();
 
         Like likeData = snapshot.Exists ? snapshot.ConvertTo<Like>() : new Like(new List<string>());
-        likeData.ToggleLike(accuont.Nickname);
+        likeData.ToggleLike(accuont.Email);
         await likeDocRef.SetAsync(likeData);
     }
 }

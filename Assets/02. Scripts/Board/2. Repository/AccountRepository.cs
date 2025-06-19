@@ -1,10 +1,12 @@
 using Firebase.Auth;
+using Firebase.Firestore;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class AccountRepository
 {
+    private FirebaseFirestore _db = FirebaseInitialize.DB;
     private FirebaseAuth _auth => FirebaseInitialize.Auth;
 
     private Account _myAccount;
@@ -21,17 +23,33 @@ public class AccountRepository
     }
 
     #region Register
-    /// <summary>
-    /// 회원가입
-    /// </summary>
+    // 닉네임 중복 체크
+    private async Task<bool> IsNicknameTakenAsync(string nickname)
+    {
+        var docRef = _db.Collection("Nicknames").Document(nickname);
+        var snapshot = await docRef.GetSnapshotAsync();
+        return snapshot.Exists; // 문서가 있으면 이미 사용중
+    }
+
     public async Task<(bool isSuccess, string errorMessage)> RegisterAsync(string email, string nickname, string password)
     {
         await FirebaseInitialize.WaitForInitializationAsync();
+
+        // 닉네임 중복 체크
+        if (await IsNicknameTakenAsync(nickname))
+        {
+            return (false, "이미 사용 중인 닉네임입니다.");
+        }
 
         try
         {
             var result = await _auth.CreateUserWithEmailAndPasswordAsync(email, password);
             await SetInitialNicknameAsync(result.User, nickname);
+
+            // 닉네임 컬렉션에 닉네임 등록 (중복 방지용)
+            var docRef = _db.Collection("Nicknames").Document(nickname);
+            await docRef.SetAsync(new { UserId = result.User.UserId });
+
             Debug.Log($"회원가입 성공 : {result.User.UserId}");
             return (true, null);
         }

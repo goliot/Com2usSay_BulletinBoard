@@ -15,6 +15,9 @@ public class PostManagerTest : MonoBehaviour
         string title = "likeTest Title";
         string content = "likeTest Content";
 
+        bool registerResult = await AccountManager.Instance.RegisterAsync("nicknameTest@test.com", "liketest", "123456");
+        Debug.Log("회원가입 결과: " + registerResult);
+
         bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
         Debug.Log("로그인 결과: " + loginResult);
 
