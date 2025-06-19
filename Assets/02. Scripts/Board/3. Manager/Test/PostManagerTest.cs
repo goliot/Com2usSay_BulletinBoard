@@ -67,7 +67,7 @@ public class PostManagerTest : MonoBehaviour
         List<PostDTO> postList = await _repository.GetPosts(0, 10);
         Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
-        await TestAddAndFetchComments(newPostDTO);
+        await TestAddAndFetchComments(newPost);
 
         /*// 6. 게시글 삭제
         await _repository.DeletePost(testPostId);
@@ -78,7 +78,7 @@ public class PostManagerTest : MonoBehaviour
         Debug.Log(deletedPost == null ? "❌ 게시글이 성공적으로 삭제됨" : "⚠ 게시글 삭제 실패");*/
     }
 
-    private async Task TestAddAndFetchComments(PostDTO post)
+    private async Task TestAddAndFetchComments(Post post)
     {
         var commentManager = CommentManager.Instance;
 
@@ -99,7 +99,7 @@ public class PostManagerTest : MonoBehaviour
         Debug.Log($"✅ 댓글 추가 완료: {commentContent}");
 
         // 댓글 목록 조회
-        List<CommentDTO> comments = await commentManager.GetComments(post);
+        List<CommentDTO> comments = await commentManager.GetComments(post.ToDto());
         Debug.Log($"📥 댓글 조회 성공, 총 댓글 수: {comments.Count}");
 
         foreach (var comment in comments)

@@ -70,9 +70,9 @@ public class Post
         Like = new Like();
     }
 
-    public void AddComment(Comment comment)
+    public void AddComment(CommentDTO comment)
     {
-        CommentList.Add(comment);
+        CommentList.Add(comment.ToEntity());
     }
 
     public void DeleteComment(CommentDTO comment)

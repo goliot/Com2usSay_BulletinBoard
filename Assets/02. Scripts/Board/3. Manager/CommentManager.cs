@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class CommentManager : Singleton<CommentManager>
 {
+    public event Action OnCommentChanged;
+
     private CommentRepository _repository = new CommentRepository();
 
-    public async Task AddComment(PostDTO post, CommentDTO comment)
+    public async Task AddComment(Post post, CommentDTO comment)
     {
         if (post == null || comment == null)
         {
@@ -16,6 +19,7 @@ public class CommentManager : Singleton<CommentManager>
 
         await _repository.AddComment(post, comment);
         Debug.Log($"댓글 추가 완료 - PostId: {post.PostId}");
+        OnCommentChanged?.Invoke();
     }
 
     public async Task<List<CommentDTO>> GetComments(PostDTO post)
@@ -31,7 +35,7 @@ public class CommentManager : Singleton<CommentManager>
         return comments;
     }
 
-    public async Task DeleteComment(PostDTO post, CommentDTO comment)
+    public async Task DeleteComment(Post post, CommentDTO comment)
     {
         if (post == null || comment == null)
         {
@@ -41,5 +45,6 @@ public class CommentManager : Singleton<CommentManager>
 
         await _repository.DeleteComment(post, comment);
         Debug.Log($"댓글 삭제 완료 - CommentId: {comment.CommentId}");
+        OnCommentChanged?.Invoke();
     }
 }
