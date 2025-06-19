@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 public class PostManager : Singleton<PostManager>
 {
     private readonly PostRepository _postRepository = new PostRepository();
-    public Post CurrentPost { get; private set; }
+    public PostDTO CurrentPost { get; private set; }
 
     public async Task CreatePost(string title, string content)
     {
         string postId = Guid.NewGuid().ToString();
         string authorId = AccountManager.Instance.MyAccount.Email;
         Post newpost = new Post(postId, title, content, authorId);
+        PostDTO newpostDTO = new PostDTO(newpost);
 
-        await _postRepository.AddPost(newpost);
+        await _postRepository.AddPost(newpostDTO);
         Debug.Log($"Post created: {newpost.PostId}, Title: {newpost.Title}, Author: {newpost.AuthorId}");
     }
 
@@ -54,15 +55,15 @@ public class PostManager : Singleton<PostManager>
         Debug.Log($"Post deleted: {CurrentPost.PostId}");
     }
 
-    public void SetCurrentPost(Post post)
+    public void SetCurrentPost(PostDTO post)
     {
         if (post == null)
         {
-            Debug.LogWarning("º±≈√µ» ∆˜Ω∫∆Æ∞° null¿‘¥œ¥Ÿ.");
+            Debug.LogWarning("ÏÑ†ÌÉùÎêú Ìè¨Ïä§Ìä∏Í∞Ä nullÏûÖÎãàÎã§.");
             return;
         }
 
         CurrentPost = post;
-        Debug.Log($"CurrentPost º≥¡§µ : {post.Title} (ID: {post.PostId})");
+        Debug.Log($"CurrentPost ÏÑ§Ï†ïÎê®: {post.Title} (ID: {post.PostId})");
     }
 }

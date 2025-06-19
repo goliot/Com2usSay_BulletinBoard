@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -18,15 +18,16 @@ public class PostManagerTest : MonoBehaviour
 
         // 1. 게시글 생성
         Post newPost = new Post(testPostId, title, content, authorId);
-        await _repository.AddPost(newPost);
+        PostDTO newPostDTO = new PostDTO(newPost);
+        await _repository.AddPost(newPostDTO);
         Debug.Log("✅ 게시글 등록 완료");
 
         // 2. 게시글 조회 (단일)
-        Post fetchedPost = await _repository.GetPost(testPostId);
+        PostDTO fetchedPost = await _repository.GetPost(testPostId);
         if (fetchedPost != null)
         {
             Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}");
-            Debug.Log($"좋아요 : {fetchedPost.Like.LikeCount}");
+            //Debug.Log($"좋아요 : {fetchedPost.Like.LikeCount}");
         }
 
         // 3. 게시글 수정
@@ -35,14 +36,14 @@ public class PostManagerTest : MonoBehaviour
         Debug.Log("✏️ 게시글 수정 완료");
 
         // 4. 다시 조회해서 수정 내용 확인
-        Post updatedPost = await _repository.GetPost(testPostId);
+        PostDTO updatedPost = await _repository.GetPost(testPostId);
         if (updatedPost != null)
         {
             Debug.Log($"🔄 수정된 게시글 내용: {updatedPost.Content}");
         }
 
         // 5. 게시글 목록 조회 (최신순)
-        List<Post> postList = await _repository.GetPosts(0, 10);
+        List<PostDTO> postList = await _repository.GetPosts(0, 10);
         Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
         /*// 6. 게시글 삭제
