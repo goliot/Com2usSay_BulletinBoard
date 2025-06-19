@@ -77,7 +77,7 @@ public class PostRepository
             {
                 comments.Add(commentDoc.ConvertTo<Comment>());
             }
-            post.CommentList = comments;
+            post.SetComment(comments);
 
             // post.setlike
             DocumentSnapshot likeDocSnapshot = await docRef.Collection("Likes").Document("likeDoc").GetSnapshotAsync();
