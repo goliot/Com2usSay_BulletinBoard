@@ -6,13 +6,13 @@ public class LikeManager : Singleton<LikeManager>
 {
     private readonly LikeRepository _repository = new LikeRepository();
 
-    public async Task<LikeDTO> LoadLikeData(Post post)
+    public async Task<LikeDTO> LoadLikeData(PostDTO post)
     {
         var likeData = await _repository.GetLike(post);
         return likeData.ToDto();
     }
 
-    public async Task ToggleLike(Post post)
+    public async Task ToggleLike(PostDTO post)
     {
         var account = AccountManager.Instance.MyAccount;
         await _repository.ToggleLike(post, account);

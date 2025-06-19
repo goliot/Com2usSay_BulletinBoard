@@ -1,6 +1,7 @@
 using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [FirestoreData]
 public class Post
@@ -20,6 +21,26 @@ public class Post
         CommentList = new List<Comment>();
         Like = new Like(new List<string>());
     }
+
+    public Post(PostDTO dto)
+    {
+        PostId = dto.PostId;
+        AuthorId = dto.AuthorId;
+        Title = dto.Title;
+        Content = dto.Content;
+        CreatedAt = Timestamp.FromDateTime(dto.CreatedAt);
+
+        // CommentList는 null이 아닌지 확인하고 복사
+        CommentList = dto.CommentList != null
+            ? new List<Comment>(dto.CommentList)
+            : new List<Comment>();
+
+        // Like 객체 생성 (DTO에서 likedUserIds만 가져온다고 가정)
+        Like = dto.Like != null
+            ? new Like(new List<string>(dto.Like.LikedUserIds))
+            : new Like(new List<string>());
+    }
+
 
     public Post(string postId, string title, string content, string authorId)
     {

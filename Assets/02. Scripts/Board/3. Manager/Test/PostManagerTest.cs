@@ -24,12 +24,12 @@ public class PostManagerTest : MonoBehaviour
         // 1. 게시글 생성
         Post newPost = new Post(testPostId, title, content, AccountManager.Instance.MyAccount.Email);
         PostDTO newPostDTO = new PostDTO(newPost);
-        await _repository.AddPost(newPost);
+        await _repository.AddPost(newPostDTO);
         Debug.Log("✅ 게시글 등록 완료");
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
@@ -41,7 +41,7 @@ public class PostManagerTest : MonoBehaviour
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
@@ -67,7 +67,7 @@ public class PostManagerTest : MonoBehaviour
         List<PostDTO> postList = await _repository.GetPosts(0, 10);
         Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
-        await TestAddAndFetchComments(newPost.ToDto());
+        await TestAddAndFetchComments(newPostDTO);
 
         /*// 6. 게시글 삭제
         await _repository.DeletePost(testPostId);

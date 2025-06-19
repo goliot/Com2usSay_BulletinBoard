@@ -21,4 +21,9 @@ public class PostDTO
         CommentList = post.CommentList;
         Like = post.Like;
     }
+    
+    public Post ToEntity()
+    {
+        return new Post(this);
+    }
 }
