@@ -28,15 +28,11 @@ public class PostManagerTest : MonoBehaviour
         await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
-        // 3. 좋아요 정보 다시 로딩
-        LikeDTO likeData = await LikeManager.Instance.LoadLikeData(newPost);
-        Debug.Log($"❤️ 현재 좋아요 수: {likeData.LikeCount}");
-
         // 4. 게시글 조회
         PostDTO fetchedPost = await _repository.GetPost(testPostId);
         if (fetchedPost != null)
         {
-            Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}");
+            Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}, 좋아요 : {fetchedPost.Like.LikeCount}");
         }
 
         // 5. 게시글 수정

@@ -46,6 +46,7 @@ public class Post
 
         CreatedAt = Timestamp.GetCurrentTimestamp();
         CommentList = new List<Comment>();
+        Like = new Like();
     }
 
     public void AddComment(Comment comment)
@@ -61,13 +62,14 @@ public class Post
         CommentList.RemoveAll(c => c.CommentId == comment.CommentId);
     }
 
-    public void ToggleLikeBy(string nickname)
+    public void SetComment(List<Comment> comment)
     {
-        if (Like == null)
-        {
-            Like = new Like(new List<string>());
-        }
-        Like.ToggleLike(nickname);
+        CommentList = comment;
+    }
+
+    public void SetLike(Like like)
+    {
+        Like = like;
     }
 
     public PostDTO ToDto()

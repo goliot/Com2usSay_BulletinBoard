@@ -15,12 +15,11 @@ public class LikeManager : Singleton<LikeManager>
     public async Task ToggleLike(Post post)
     {
         var account = AccountManager.Instance.MyAccount;
-
-        // Firebase 저장은 DTO로
         await _repository.ToggleLike(post, account);
 
-        // 로컬 상태 반영은 도메인 객체로
-        post.ToggleLikeBy(account.Nickname);
+        // 서버에서 최신 Like 정보 받아와서 동기화
+        var likeData = await _repository.GetLike(post);
+        post.SetLike(likeData);
     }
 
     public bool IsLikedByMe(Post post)

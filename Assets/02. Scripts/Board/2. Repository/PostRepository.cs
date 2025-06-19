@@ -68,7 +68,31 @@ public class PostRepository
             Post post = snapshot.ConvertTo<Post>();
 
             // post.setcomment
+            var commentsSnapshot = await docRef.Collection("Comments")
+                                      .OrderBy("CreatedAt")
+                                      .GetSnapshotAsync();
+
+            List<Comment> comments = new List<Comment>();
+            foreach (var commentDoc in commentsSnapshot.Documents)
+            {
+                comments.Add(commentDoc.ConvertTo<Comment>());
+            }
+            post.CommentList = comments;
+
             // post.setlike
+            DocumentSnapshot likeDocSnapshot = await docRef.Collection("Likes").Document("likeDoc").GetSnapshotAsync();
+
+            if (likeDocSnapshot.Exists)
+            {
+                Like likeData = likeDocSnapshot.ConvertTo<Like>();
+                post.SetLike(likeData);
+                post.Like.SyncHashSet();  // 내부 해시셋 동기화(필요시)
+            }
+            else
+            {
+                //post.Like = new Like(new List<string>());
+            }
+
             return post.ToDto();
         }
         else
