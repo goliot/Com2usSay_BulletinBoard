@@ -15,7 +15,7 @@ public class LikeRepository
             return new Like(new List<string>());
     }
 
-    public async Task ToggleLike(PostDTO post, AccountDTO accuont)
+    public async Task ToggleLike(Post post, AccountDTO accuont)
     {
         var likeDocRef = _db.Collection("Posts").Document(post.PostId).Collection("Likes").Document("likeDoc");
         var snapshot = await likeDocRef.GetSnapshotAsync();

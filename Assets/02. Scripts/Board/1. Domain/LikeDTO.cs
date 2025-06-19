@@ -7,6 +7,6 @@ public class LikeDTO
 
     public LikeDTO(Like like) 
     {
-        LikedUserIds = new List<string>(like.LikedUserIds);
+        LikedUserIds = new List<string>(like.LikedUserIdHash);
     }
 }
