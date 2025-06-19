@@ -9,11 +9,16 @@ using System;
 
 public class AccountManager : Singleton<AccountManager>
 {
+    public event Action OnLoginSuccess;
+
+    private Account _myAccount;
+    public AccountDTO MyAccount => _myAccount.ToDto();
+
     private FirebaseAuth _auth => FirebaseInitialize.Auth;
 
-    public void Register(Account account)
+    public void Register(string email, string nickname, string password)
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(account.Email, account.Password).ContinueWithOnMainThread(task => {
+        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
                 Debug.LogError($"회원가입에 실패했습니다. : {task.Exception.Message}");
@@ -24,32 +29,43 @@ public class AccountManager : Singleton<AccountManager>
             AuthResult result = task.Result;
             Debug.Log($"회원가입에 성공했습니다.: {result.User.DisplayName} ({result.User.UserId})");
 
-            InitialNicknameChange(result.User, account.Nickname);
+            InitialNicknameChange(result.User, nickname);
         });
     }
 
-    /*private void ChangeMyNickname(Account account, string newNickname)
+    public void ChangeMyNickname(string newNickname)
     {
-        if(account.Email != GetMyProfile().Email)
+        FirebaseUser user = _auth.CurrentUser;
+
+        if (user == null)
         {
+            Debug.LogWarning("로그인된 유저가 없습니다.");
             return;
         }
-        FirebaseUser user = _auth.CurrentUser;
+        if(user.Email != _myAccount.Email)
+        {
+            throw new Exception("유저 정보가 다릅니다");
+        }
 
         UserProfile profile = new UserProfile
         {
             DisplayName = newNickname,
         };
+
         user.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
-                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception);
+                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception?.Flatten().Message);
                 return;
             }
 
-            Debug.Log("닉네임 변경에 성공했습니다.");
+            Debug.Log($"닉네임이 '{newNickname}'(으)로 변경되었습니다.");
+
+            // UI나 저장된 모델이 있다면 여기서 갱신
+            _myAccount.SetNickname(newNickname, out string message);
+            // 예: UIManager.Instance.UpdateNickname(newNickname);
         });
-    }*/
+    }
 
     private void InitialNicknameChange(FirebaseUser user, string nickname)
     {
@@ -73,33 +89,25 @@ public class AccountManager : Singleton<AccountManager>
         });
     }
 
-    public void Login(Account account)
+    public void Login(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(account.Email, account.Password).ContinueWithOnMainThread(task => {
+        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled || task.IsFaulted)
             {
                 Debug.LogError($"로그인에 실패했습니다.: {task.Exception.Message}");
                 return;
             }
-
+            
             AuthResult result = task.Result;
+            SetMyAccount(result.User);
             Debug.Log($"로그인 성공 : {result.User.DisplayName} ({result.User.UserId})");
+
+            OnLoginSuccess?.Invoke();
         });
     }
 
-    public Account GetMyProfile()
+    private void SetMyAccount(FirebaseUser user)
     {
-        FirebaseUser user = _auth.CurrentUser;
-        if (user == null)
-        {
-            return null;
-        }
-
-        string nickname = user.DisplayName;
-        string email = user.Email;
-
-        Account account = new Account(email, nickname, "confidential");
-
-        return account;
+        _myAccount = new Account(user.Email, user.DisplayName);
     }
 }
