@@ -9,7 +9,7 @@ public class PostRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task AddPost(Post post)
+    public async Task AddPost(PostDTO post)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(post.PostId);
 
@@ -27,7 +27,7 @@ public class PostRepository
         await likeDoc.SetAsync(likeData);
     }
 
-    public async Task<List<Post>> GetPosts(int start, int limit)
+    public async Task<List<PostDTO>> GetPosts(int start, int limit)
     {
         Query query = _db.Collection("Posts")
                          .OrderByDescending("CreatedAt")
@@ -48,24 +48,24 @@ public class PostRepository
 
         QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
-        List<Post> postList = new List<Post>();
+        List<PostDTO> postList = new List<PostDTO>();
         foreach (var doc in snapshot.Documents)
         {
-            postList.Add(doc.ConvertTo<Post>());
+            postList.Add(doc.ConvertTo<PostDTO>());
         }
 
         return postList;
     }
 
 
-    public async Task<Post> GetPost(string postId)
+    public async Task<PostDTO> GetPost(string postId)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(postId);
         DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
         if (snapshot.Exists)
         {
-            Post post = snapshot.ConvertTo<Post>();
+            PostDTO post = snapshot.ConvertTo<PostDTO>();
             return post;
         }
         else
@@ -85,17 +85,24 @@ public class PostRepository
         await docRef.UpdateAsync(updates);
         Debug.Log($"Post Updated: {postId}");
     }
-    public async Task DeletePost(string postId) 
+    public async Task DeletePost(string postId)
     {
-        DocumentReference docRef = _db.Collection("posts").Document(postId);
+        DocumentReference docRef = _db.Collection("Posts").Document(postId);
 
-        // 하위 컬렉션 'comments' 제거
-        var comments = await docRef.Collection("comments").GetSnapshotAsync();
+        // 1. 하위 컬렉션 'Comments' 제거
+        var comments = await docRef.Collection("Comments").GetSnapshotAsync();
         foreach (var comment in comments.Documents)
             await comment.Reference.DeleteAsync();
 
+        // 2. 하위 컬렉션 'Likes' 제거
+        var likes = await docRef.Collection("Likes").GetSnapshotAsync();
+        foreach (var like in likes.Documents)
+            await like.Reference.DeleteAsync();
+
+        // 3. 게시글 문서 자체 제거
         await docRef.DeleteAsync();
 
-        Debug.Log($"Post '{postId}' 및 하위 comment deleted");
+        Debug.Log($"Post '{postId}' 및 하위 Comments, Likes 삭제 완료");
     }
+
 }
