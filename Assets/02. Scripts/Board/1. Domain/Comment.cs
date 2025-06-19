@@ -4,6 +4,7 @@ using System;
 [FirestoreData]
 public class Comment
 {
+    [FirestoreProperty] public string CommentId { get; set; }
     [FirestoreProperty] public string AuthorId { get; set; }
     [FirestoreProperty] public string Content { get; set; }
     [FirestoreProperty] public Timestamp CreatedAt { get; set; }
@@ -19,5 +20,10 @@ public class Comment
         AuthorId = authorId;
         Content = content;
         CreatedAt = Timestamp.GetCurrentTimestamp();
+    }
+
+    public CommentDTO ToDto()
+    {
+        return new CommentDTO(this);
     }
 }

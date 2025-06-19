@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+
+public class PostDTO
+{
+    public readonly string PostId;
+    public readonly string AuthorId;
+    public readonly string Title;
+    public readonly string Content;
+    public readonly DateTime CreatedAt;
+    public readonly List<Comment> CommentList;
+    public readonly Like Like;
+
+    public PostDTO(Post post)
+    {
+        PostId = post.PostId;
+        AuthorId = post.AuthorId;
+        Title = post.Title;
+        Content = post.Content;
+        CreatedAt = post.CreatedAt.ToDateTime();
+        CommentList = post.CommentList;
+        Like = post.Like;
+    }
+}

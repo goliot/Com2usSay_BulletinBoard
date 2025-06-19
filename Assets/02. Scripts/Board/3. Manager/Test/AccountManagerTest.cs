@@ -8,11 +8,11 @@ public class AccountManagerTest : MonoBehaviour
         await FirebaseInitialize.WaitForInitializationAsync();
 
         // 회원가입 테스트
-        bool registerResult = await AccountManager.Instance.RegisterAsync("test@test.com", "testNick", "123456");
+        bool registerResult = await AccountManager.Instance.RegisterAsync("liketest@test.com", "liketest", "123456");
         Debug.Log("회원가입 결과: " + registerResult);
 
         // 로그인 테스트
-        bool loginResult = await AccountManager.Instance.LoginAsync("test@test.com", "123456");
+        bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
         Debug.Log("로그인 결과: " + loginResult);
 
         if (loginResult)

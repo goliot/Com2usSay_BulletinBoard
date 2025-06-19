@@ -1,14 +1,17 @@
 using Firebase.Firestore;
 
-[FirestoreData]
 public class CommentDTO
 {
-    private readonly string _authorId;
-    [FirestoreProperty] public string AuthorId => _authorId;
+    public readonly string CommentId;
+    public readonly string AuthorId;
+    public readonly string Content;
+    public readonly Timestamp CreatedAt;
 
-    private readonly string _content;
-    [FirestoreProperty] public string Content => _content;
-
-    private readonly Timestamp _createdAt;
-    [FirestoreProperty] public Timestamp CreatedAt => _createdAt;
+    public CommentDTO(Comment comment)
+    {
+        CommentId = comment.CommentId;
+        AuthorId = comment.AuthorId;
+        Content = comment.Content;
+        CreatedAt = comment.CreatedAt;
+    }
 }

@@ -27,7 +27,7 @@ public class PostRepository
         await likeDoc.SetAsync(likeData);
     }
 
-    public async Task<List<Post>> GetPosts(int start, int limit)
+    public async Task<List<PostDTO>> GetPosts(int start, int limit)
     {
         Query query = _db.Collection("Posts")
                          .OrderByDescending("CreatedAt")
@@ -54,11 +54,11 @@ public class PostRepository
             postList.Add(doc.ConvertTo<Post>());
         }
 
-        return postList;
+        return postList.ConvertAll((item) => item.ToDto());
     }
 
 
-    public async Task<Post> GetPost(string postId)
+    public async Task<PostDTO> GetPost(string postId)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(postId);
         DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
@@ -66,7 +66,33 @@ public class PostRepository
         if (snapshot.Exists)
         {
             Post post = snapshot.ConvertTo<Post>();
-            return post;
+
+            // post.setcomment
+            var commentsSnapshot = await docRef.Collection("Comments")
+                                      .OrderBy("CreatedAt")
+                                      .GetSnapshotAsync();
+
+            List<Comment> comments = new List<Comment>();
+            foreach (var commentDoc in commentsSnapshot.Documents)
+            {
+                comments.Add(commentDoc.ConvertTo<Comment>());
+            }
+            post.SetComment(comments);
+
+            // post.setlike
+            DocumentSnapshot likeDocSnapshot = await docRef.Collection("Likes").Document("likeDoc").GetSnapshotAsync();
+
+            if (likeDocSnapshot.Exists)
+            {
+                Like likeData = likeDocSnapshot.ConvertTo<Like>();
+                post.SetLike(likeData);
+            }
+            else
+            {
+                //post.Like = new Like(new List<string>());
+            }
+
+            return post.ToDto();
         }
         else
         {
@@ -85,17 +111,24 @@ public class PostRepository
         await docRef.UpdateAsync(updates);
         Debug.Log($"Post Updated: {postId}");
     }
-    public async Task DeletePost(string postId) 
+    public async Task DeletePost(string postId)
     {
-        DocumentReference docRef = _db.Collection("posts").Document(postId);
+        DocumentReference docRef = _db.Collection("Posts").Document(postId);
 
-        // 하위 컬렉션 'comments' 제거
-        var comments = await docRef.Collection("comments").GetSnapshotAsync();
+        // 1. 하위 컬렉션 'Comments' 제거
+        var comments = await docRef.Collection("Comments").GetSnapshotAsync();
         foreach (var comment in comments.Documents)
             await comment.Reference.DeleteAsync();
 
+        // 2. 하위 컬렉션 'Likes' 제거
+        var likes = await docRef.Collection("Likes").GetSnapshotAsync();
+        foreach (var like in likes.Documents)
+            await like.Reference.DeleteAsync();
+
+        // 3. 게시글 문서 자체 제거
         await docRef.DeleteAsync();
 
-        Debug.Log($"Post '{postId}' 및 하위 comment deleted");
+        Debug.Log($"Post '{postId}' 및 하위 Comments, Likes 삭제 완료");
     }
+
 }
