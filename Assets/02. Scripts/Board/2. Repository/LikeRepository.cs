@@ -6,22 +6,22 @@ public class LikeRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task<Like> GetLike(string postId)
+    public async Task<Like> GetLike(PostDTO post)
     {
-        var likeDoc = await _db.Collection("Posts").Document(postId).Collection("Likes").Document("likeDoc").GetSnapshotAsync();
+        var likeDoc = await _db.Collection("Posts").Document(post.PostId).Collection("Likes").Document("likeDoc").GetSnapshotAsync();
         if (likeDoc.Exists)
             return likeDoc.ConvertTo<Like>();
         else
             return new Like(new List<string>());
     }
 
-    public async Task ToggleLike(string postId, string userId)
+    public async Task ToggleLike(PostDTO post, AccountDTO accuont)
     {
-        var likeDocRef = _db.Collection("Posts").Document(postId).Collection("Likes").Document("likeDoc");
+        var likeDocRef = _db.Collection("Posts").Document(post.PostId).Collection("Likes").Document("likeDoc");
         var snapshot = await likeDocRef.GetSnapshotAsync();
 
         Like likeData = snapshot.Exists ? snapshot.ConvertTo<Like>() : new Like(new List<string>());
-        likeData.ToggleLike(userId);
+        likeData.ToggleLike(accuont.Nickname);
         await likeDocRef.SetAsync(likeData);
     }
 }

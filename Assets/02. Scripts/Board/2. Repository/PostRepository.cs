@@ -9,7 +9,7 @@ public class PostRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task AddPost(PostDTO post)
+    public async Task AddPost(Post post)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(post.PostId);
 
@@ -48,13 +48,13 @@ public class PostRepository
 
         QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
-        List<PostDTO> postList = new List<PostDTO>();
+        List<Post> postList = new List<Post>();
         foreach (var doc in snapshot.Documents)
         {
-            postList.Add(doc.ConvertTo<PostDTO>());
+            postList.Add(doc.ConvertTo<Post>());
         }
 
-        return postList;
+        return postList.ConvertAll((item) => item.ToDto());
     }
 
 
@@ -65,8 +65,8 @@ public class PostRepository
 
         if (snapshot.Exists)
         {
-            PostDTO post = snapshot.ConvertTo<PostDTO>();
-            return post;
+            Post post = snapshot.ConvertTo<Post>();
+            return post.ToDto();
         }
         else
         {

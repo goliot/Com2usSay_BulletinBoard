@@ -45,4 +45,9 @@ public class Like
             return true;
         }
     }
+
+    public LikeDTO ToDto()
+    {
+        return new LikeDTO(this);
+    }
 }

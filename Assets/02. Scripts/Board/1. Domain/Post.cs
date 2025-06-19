@@ -10,9 +10,9 @@ public class Post
     [FirestoreProperty] public string Title { get; set; }
     [FirestoreProperty] public string Content { get; set; }
     [FirestoreProperty] public Timestamp CreatedAt { get; set; }
-    public List<Comment> CommentList { get; set; } = new List<Comment>();
+    public List<Comment> CommentList { get; private set; } = new List<Comment>();
     public int CommentCount => CommentList.Count;
-    public Like Like { get; set; } //= new Like();
+    public Like Like { get; private set; } //= new Like();
     public int LikeCount => Like.LikeCount;
 
     public Post()
@@ -59,6 +59,15 @@ public class Post
             return;
 
         CommentList.RemoveAll(c => c.CommentId == comment.CommentId);
+    }
+
+    public void ToggleLikeBy(string nickname)
+    {
+        if (Like == null)
+        {
+            Like = new Like(new List<string>());
+        }
+        Like.ToggleLike(nickname);
     }
 
     public PostDTO ToDto()
