@@ -2,15 +2,22 @@ using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
 
+[FirestoreData]
 public class Post
 {
-    public string PostId { get; set; }  // 문서 ID
-    public string Title { get; set; }
-    public string Content { get; set; }
-    public string AuthorId { get; set; }
-    public readonly Timestamp CreatedAt;
+    private readonly string _postId;
+    [FirestoreProperty] public string PostId => _postId; // 문서 ID
 
-    public List<Comment> CommentList { get; private set; }
+    private readonly string _authorId;
+    [FirestoreProperty] public string AuthorId => _authorId;
+
+    [FirestoreProperty] public string Title { get; set; }
+    [FirestoreProperty] public string Content { get; set; }
+
+    private readonly Timestamp _createdAt;
+    [FirestoreProperty] public Timestamp CreatedAt => _createdAt;
+
+    [FirestoreProperty] public List<Comment> CommentList { get; private set; }
 
     public Post(string postId, string title, string content, string authorId)
     {
@@ -30,12 +37,12 @@ public class Post
         {
             throw new Exception("작성자 Id가 비었습니다.");
         }
-        PostId = postId;
+        _postId = postId;
+        _authorId = authorId;
         Title = title;
         Content = content;
-        AuthorId = authorId;
 
-        CreatedAt = Timestamp.GetCurrentTimestamp();
+        _createdAt = Timestamp.GetCurrentTimestamp();
         CommentList = new List<Comment>();
     }
 }

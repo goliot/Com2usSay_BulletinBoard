@@ -15,11 +15,11 @@ public class AccountPasswordSpecification : ISpecification<string>
             return false;
         }
 
-        if (!_passwordRegex.IsMatch(value))
-        {
-            ErrorMessage = "패스워드는 6자 이상 12자 이하여야 합니다.";
-            return false;
-        }
+        //if (!_passwordRegex.IsMatch(value))
+        //{
+        //    ErrorMessage = "패스워드는 6자 이상 12자 이하여야 합니다.";
+        //    return false;
+        //}
 
         return true;
     }

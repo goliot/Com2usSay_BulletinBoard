@@ -1,11 +1,15 @@
 using Firebase.Firestore;
 using System;
 
+[FirestoreData]
 public class Comment
 {
-    public string AuthorId { get; private set; }
-    public string Content { get; private set; }
-    public readonly Timestamp CreatedAt;
+    private readonly string _authorId;
+    [FirestoreProperty] public string AuthorId => _authorId;
+    [FirestoreProperty] public string Content { get; private set; }
+
+    private readonly Timestamp _createdAt;
+    [FirestoreProperty] public Timestamp CreatedAt => _createdAt;
 
     public Comment(string authorId, string content)
     {
@@ -17,8 +21,8 @@ public class Comment
         {
             throw new Exception("작성자 Id가 비었습니다.");
         }
-        AuthorId = authorId;
+        _authorId = authorId;
         Content = content;
-        CreatedAt = Timestamp.GetCurrentTimestamp();
+        _createdAt = Timestamp.GetCurrentTimestamp();
     }
 }

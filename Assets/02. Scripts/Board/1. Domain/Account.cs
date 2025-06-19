@@ -1,10 +1,16 @@
+using Firebase.Firestore;
 using System;
 
+[FirestoreData]
 public class Account
 {
-    public string Email { get; }
-    public string Nickname { get; }
-    public string Password { get; }
+    private readonly string _email;
+    [FirestoreProperty] public string Email => _email;
+
+    private readonly string _password;
+    [FirestoreProperty] public string Password => _password;
+
+    [FirestoreProperty] public string Nickname { get; }
 
     public Account(string email, string nickname, string password)
     {
@@ -29,8 +35,8 @@ public class Account
             throw new Exception(passwordSpecification.ErrorMessage);
         }
 
-        Email = email;
+        _email = email;
         Nickname = nickname;
-        Password = password;
+        _password = password;
     }
 }
