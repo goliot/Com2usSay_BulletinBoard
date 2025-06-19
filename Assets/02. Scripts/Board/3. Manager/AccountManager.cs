@@ -5,109 +5,161 @@ using Firebase.Firestore;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 
 public class AccountManager : Singleton<AccountManager>
 {
     public event Action OnLoginSuccess;
-
-    private Account _myAccount;
-    public AccountDTO MyAccount => _myAccount.ToDto();
+    public event Action OnLogout;
 
     private FirebaseAuth _auth => FirebaseInitialize.Auth;
 
-    public void Register(string email, string nickname, string password)
+    private Account _myAccount;
+    public AccountDTO MyAccount
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
+        get
+        {
+            if (_myAccount == null)
             {
-                Debug.LogError($"회원가입에 실패했습니다. : {task.Exception.Message}");
-                return;
+                throw new InvalidOperationException("현재 로그인된 계정이 없습니다.");
             }
-
-            // Firebase user has been created.
-            AuthResult result = task.Result;
-            Debug.Log($"회원가입에 성공했습니다.: {result.User.DisplayName} ({result.User.UserId})");
-
-            InitialNicknameChange(result.User, nickname);
-        });
+            return _myAccount.ToDto();
+        }
     }
 
-    public void ChangeMyNickname(string newNickname)
+    #region Register
+    /// <summary>
+    /// 회원가입
+    /// </summary>
+    public async Task<bool> RegisterAsync(string email, string nickname, string password)
     {
-        FirebaseUser user = _auth.CurrentUser;
+        await FirebaseInitialize.WaitForInitializationAsync();
 
-        if (user == null)
+        try
         {
-            Debug.LogWarning("로그인된 유저가 없습니다.");
-            return;
+            var result = await _auth.CreateUserWithEmailAndPasswordAsync(email, password);
+            await SetInitialNicknameAsync(result.User, nickname);
+            Debug.Log($"회원가입 성공 : {result.User.UserId}");
+            return true;
         }
-        if(user.Email != _myAccount.Email)
+        catch (Exception ex)
         {
-            throw new Exception("유저 정보가 다릅니다");
+            Debug.LogError($"회원가입 실패: {ex.Message}");
+            return false;
         }
-
-        UserProfile profile = new UserProfile
-        {
-            DisplayName = newNickname,
-        };
-
-        user.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception?.Flatten().Message);
-                return;
-            }
-
-            Debug.Log($"닉네임이 '{newNickname}'(으)로 변경되었습니다.");
-
-            // UI나 저장된 모델이 있다면 여기서 갱신
-            _myAccount.SetNickname(newNickname, out string message);
-            // 예: UIManager.Instance.UpdateNickname(newNickname);
-        });
     }
 
-    private void InitialNicknameChange(FirebaseUser user, string nickname)
+    /// <summary>
+    /// 회원가입 시 최초 1회 서버의 DisplayName변경용
+    /// </summary>
+    private async Task SetInitialNicknameAsync(FirebaseUser user, string nickname)
     {
-        if (user == null)
-        {
-            return;
-        }
+        await FirebaseInitialize.WaitForInitializationAsync();
 
-        UserProfile profile = new UserProfile
-        {
-            DisplayName = nickname,
-        };
-        user.UpdateUserProfileAsync(profile).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError("닉네임 변경에 실패했습니다.: " + task.Exception);
-                return;
-            }
+        if (user == null) return;
 
-            Debug.Log("닉네임 변경에 성공했습니다.");
-        });
+        var profile = new UserProfile { DisplayName = nickname };
+        await user.UpdateUserProfileAsync(profile);
     }
+    #endregion
 
-    public void Login(string email, string password)
+    #region 로그인/로그아웃
+    /// <summary>
+    /// 로그인
+    /// </summary>
+    public async Task<bool> LoginAsync(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled || task.IsFaulted)
-            {
-                Debug.LogError($"로그인에 실패했습니다.: {task.Exception.Message}");
-                return;
-            }
-            
-            AuthResult result = task.Result;
+        await FirebaseInitialize.WaitForInitializationAsync();
+
+        try
+        {
+            var result = await _auth.SignInWithEmailAndPasswordAsync(email, password);
             SetMyAccount(result.User);
             Debug.Log($"로그인 성공 : {result.User.DisplayName} ({result.User.UserId})");
 
             OnLoginSuccess?.Invoke();
-        });
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"로그인 실패: {ex.Message}");
+            return false;
+        }
     }
 
+    /// <summary>
+    /// 동기로 로그아웃이 더 안정적일 듯 함
+    /// </summary>
+    public void Logout()
+    {
+        if (_auth.CurrentUser == null)
+        {
+            Debug.LogWarning("이미 로그아웃된 상태입니다.");
+            return;
+        }
+
+        _auth.SignOut();
+        SetMyAccount(null);
+
+        Debug.Log("로그아웃 되었습니다.");
+        OnLogout?.Invoke();  // UI 갱신 같은 후속처리
+    }
+    #endregion
+
+    #region Nickname
+    /// <summary>
+    /// 로그인 후, 자신의 닉네임 변경 용
+    /// </summary>
+    public async Task<bool> ChangeMyNicknameAsync(string newNickname)
+    {
+        await FirebaseInitialize.WaitForInitializationAsync();
+
+        var user = _auth.CurrentUser;
+
+        if (user == null)
+        {
+            Debug.LogWarning("로그인된 유저가 없습니다.");
+            return false;
+        }
+
+        if (user.Email != _myAccount.Email)
+        {
+            throw new Exception("유저 정보가 다릅니다");
+        }
+
+        var profile = new UserProfile
+        {
+            DisplayName = newNickname,
+        };
+
+        try
+        {
+            await user.UpdateUserProfileAsync(profile);
+            _myAccount.SetNickname(newNickname, out string message);
+            Debug.Log($"닉네임이 '{newNickname}'(으)로 변경되었습니다.");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("닉네임 변경 실패: " + ex.Message);
+            return false;
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// 내부적으로 가지고 있는 Account 객체 유지용
+    /// </summary>
     private void SetMyAccount(FirebaseUser user)
     {
-        _myAccount = new Account(user.Email, user.DisplayName);
+        if (user != null)
+        {
+            _myAccount = new Account(user.Email, user.DisplayName);
+        }
+        else
+        {
+            _myAccount = null;
+        }
     }
 }
