@@ -18,8 +18,8 @@ public class LikeManager : Singleton<LikeManager>
         await _repository.ToggleLike(post, account);
 
         // 서버에서 최신 Like 정보 받아와서 동기화
-        var likeData = await _repository.GetLike(post);
-        post.SetLike(likeData);
+        //var likeData = await _repository.GetLike(post);
+        //post.SetLike(likeData);
     }
 
     public bool IsLikedByMe(Post post)

@@ -86,7 +86,6 @@ public class PostRepository
             {
                 Like likeData = likeDocSnapshot.ConvertTo<Like>();
                 post.SetLike(likeData);
-                post.Like.SyncHashSet();  // 내부 해시셋 동기화(필요시)
             }
             else
             {

@@ -25,11 +25,24 @@ public class PostManagerTest : MonoBehaviour
         Debug.Log("✅ 게시글 등록 완료");
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
+        Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
         await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
         PostDTO fetchedPost = await _repository.GetPost(testPostId);
+        if (fetchedPost != null)
+        {
+            Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}, 좋아요 : {fetchedPost.Like.LikeCount}");
+        }
+
+        // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
+        Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
+        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
+        Debug.Log("👍 좋아요 1회 토글 완료");
+
+        // 4. 게시글 조회
+        fetchedPost = await _repository.GetPost(testPostId);
         if (fetchedPost != null)
         {
             Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}, 좋아요 : {fetchedPost.Like.LikeCount}");
