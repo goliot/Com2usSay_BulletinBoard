@@ -6,7 +6,7 @@ public class LikeRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task<Like> GetLike(PostDTO post)
+    public async Task<Like> GetLike(Post post)
     {
         var likeDoc = await _db.Collection("Posts").Document(post.PostId).Collection("Likes").Document("likeDoc").GetSnapshotAsync();
         if (likeDoc.Exists)

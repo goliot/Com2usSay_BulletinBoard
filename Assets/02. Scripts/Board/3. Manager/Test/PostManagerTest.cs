@@ -12,10 +12,10 @@ public class PostManagerTest : MonoBehaviour
         _repository = new PostRepository();
 
         string testPostId = "post_" + System.Guid.NewGuid().ToString();
-        string title = "Test Title";
-        string content = "Test Content";
+        string title = "likeTest Title";
+        string content = "likeTest Content";
 
-        bool loginResult = await AccountManager.Instance.LoginAsync("test@test.com", "123456");
+        bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
         Debug.Log("로그인 결과: " + loginResult);
 
         // 1. 게시글 생성
@@ -29,7 +29,7 @@ public class PostManagerTest : MonoBehaviour
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 3. 좋아요 정보 다시 로딩
-        LikeDTO likeData = await LikeManager.Instance.LoadLikeData(newPostDTO);
+        LikeDTO likeData = await LikeManager.Instance.LoadLikeData(newPost);
         Debug.Log($"❤️ 현재 좋아요 수: {likeData.LikeCount}");
 
         // 4. 게시글 조회

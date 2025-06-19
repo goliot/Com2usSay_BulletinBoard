@@ -6,7 +6,7 @@ public class LikeManager : Singleton<LikeManager>
 {
     private readonly LikeRepository _repository = new LikeRepository();
 
-    public async Task<LikeDTO> LoadLikeData(PostDTO post)
+    public async Task<LikeDTO> LoadLikeData(Post post)
     {
         var likeData = await _repository.GetLike(post);
         return likeData.ToDto();
