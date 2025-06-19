@@ -13,7 +13,7 @@ public class CommentRepository
     {
         var commentsRef = _db.Collection("Posts").Document(post.PostId).Collection("Comments");
         var newCommentRef = commentsRef.Document();
-        await newCommentRef.SetAsync(comment);
+        await newCommentRef.SetAsync(comment.ToEntity());
     }
 
     public async Task<List<CommentDTO>> GetComments(PostDTO post)

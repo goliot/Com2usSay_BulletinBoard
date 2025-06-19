@@ -67,6 +67,8 @@ public class PostManagerTest : MonoBehaviour
         List<PostDTO> postList = await _repository.GetPosts(0, 10);
         Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
+        await TestAddAndFetchComments(newPost.ToDto());
+
         /*// 6. 게시글 삭제
         await _repository.DeletePost(testPostId);
         Debug.Log("🗑 게시글 삭제 완료");
@@ -74,5 +76,35 @@ public class PostManagerTest : MonoBehaviour
         // 7. 삭제 후 확인
         Post deletedPost = await _repository.GetPost(testPostId);
         Debug.Log(deletedPost == null ? "❌ 게시글이 성공적으로 삭제됨" : "⚠ 게시글 삭제 실패");*/
+    }
+
+    private async Task TestAddAndFetchComments(PostDTO post)
+    {
+        var commentManager = CommentManager.Instance;
+
+        // 댓글 생성
+        string commentId = System.Guid.NewGuid().ToString();
+        string commentContent = "이것은 테스트 댓글입니다.";
+        string authorId = AccountManager.Instance.MyAccount.Email;
+
+        CommentDTO newComment = new Comment
+        {
+            CommentId = commentId,
+            AuthorId = authorId,
+            Content = commentContent,
+            CreatedAt = Firebase.Firestore.Timestamp.GetCurrentTimestamp()
+        }.ToDto();
+
+        await commentManager.AddComment(post, newComment);
+        Debug.Log($"✅ 댓글 추가 완료: {commentContent}");
+
+        // 댓글 목록 조회
+        List<CommentDTO> comments = await commentManager.GetComments(post);
+        Debug.Log($"📥 댓글 조회 성공, 총 댓글 수: {comments.Count}");
+
+        foreach (var comment in comments)
+        {
+            Debug.Log($" - 댓글: {comment.Content} (작성자: {comment.AuthorId})");
+        }
     }
 }
