@@ -11,4 +11,15 @@ public class Post
     public readonly Timestamp CreatedAt;
 
     public List<Comment> CommentList { get; private set; }
+
+    public Post(string postId, string title, string content, string authorId)
+    {
+        PostId = postId;
+        Title = title;
+        Content = content;
+        AuthorId = authorId;
+
+        CreatedAt = Timestamp.GetCurrentTimestamp();
+        CommentList = new List<Comment>();
+    }
 }

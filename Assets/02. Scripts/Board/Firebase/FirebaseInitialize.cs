@@ -3,14 +3,12 @@ using Firebase.Extensions;
 using Firebase.Auth;
 using Firebase.Firestore;
 using UnityEngine;
-using System.Collections.Generic;
-using System;
 
-public class Initialize : MonoBehaviour
+public class FirebaseInitialize : MonoBehaviour
 {
-    private FirebaseApp _app;
-    private FirebaseAuth _auth;
-    private FirebaseFirestore _db;
+    public static FirebaseApp App { get; private set; }
+    public static FirebaseAuth Auth { get; private set; }
+    public static FirebaseFirestore DB { get; private set; }
 
     private void Start()
     {
@@ -24,10 +22,14 @@ public class Initialize : MonoBehaviour
             if (dependencyStatus == DependencyStatus.Available)
             {
                 Debug.Log("파이어베이스 연결에 성공했습니다.");
+
+                App = FirebaseApp.DefaultInstance;
+                Auth = FirebaseAuth.DefaultInstance;
+                DB = FirebaseFirestore.DefaultInstance;
             }
             else
             {
-                Debug.LogError(string.Format($"파이어베이스 연결에 실패했습니다. : {dependencyStatus}"));
+                Debug.LogError($"파이어베이스 연결에 실패했습니다. : {dependencyStatus}");
             }
         });
     }
