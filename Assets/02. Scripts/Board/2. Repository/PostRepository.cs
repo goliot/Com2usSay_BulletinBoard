@@ -66,6 +66,9 @@ public class PostRepository
         if (snapshot.Exists)
         {
             Post post = snapshot.ConvertTo<Post>();
+
+            // post.setcomment
+            // post.setlike
             return post.ToDto();
         }
         else
