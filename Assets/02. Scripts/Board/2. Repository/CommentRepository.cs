@@ -12,7 +12,24 @@ public class CommentRepository
     public async Task AddComment(string postId, Comment comment)
     {
         var commentsRef = _db.Collection("Posts").Document(postId).Collection("Comments");
-        var newCommentRef = commentsRef.Document(); // 자동 ID 생성
+        var newCommentRef = commentsRef.Document();
         await newCommentRef.SetAsync(comment);
+    }
+
+    public async Task<List<Comment>> GetComments(string postId)
+    {
+        var commentsSnapshot = await _db.Collection("Posts").Document(postId).Collection("Comments")
+                                        .OrderBy("CreatedAt").GetSnapshotAsync();
+
+        List<Comment> comments = new List<Comment>();
+        foreach (var doc in commentsSnapshot.Documents)
+            comments.Add(doc.ConvertTo<Comment>());
+
+        return comments;
+    }
+
+    public async Task DeleteComment(string postId, string commentId)
+    {
+        await _db.Collection("Posts").Document(postId).Collection("Comments").Document(commentId).DeleteAsync();
     }
 }

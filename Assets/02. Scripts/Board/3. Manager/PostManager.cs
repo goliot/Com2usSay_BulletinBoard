@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 public class PostManager : Singleton<PostManager>
 {
     private readonly PostRepository _postRepository = new PostRepository();
+    public Post CurrentPost { get; private set; }
 
     public async Task CreatePost(string title, string content)
     {
@@ -16,9 +17,9 @@ public class PostManager : Singleton<PostManager>
         Debug.Log($"Post created: {newpost.PostId}, Title: {newpost.Title}, Author: {newpost.AuthorId}");
     }
 
-    public async Task UpdatePost(string postId, string content)
+    public async Task UpdatePost(string content)
     {
-        if (string.IsNullOrEmpty(postId))
+        if (string.IsNullOrEmpty(CurrentPost.PostId))
         {
             throw new Exception("Post ID cannot be null or empty.");
         }
@@ -27,30 +28,41 @@ public class PostManager : Singleton<PostManager>
             throw new Exception("Content cannot be null or empty.");
         }
 
-        Post targetPost = await _postRepository.GetPost(postId);
         string requesterId = AccountManager.Instance.MyAccount.Email;
-        if ( targetPost.AuthorId != requesterId)
+        if (CurrentPost == null || CurrentPost.AuthorId != requesterId)
         {
             throw new Exception("You do not have permission to update this post.");
         }
 
-        await _postRepository.UpdatePost(postId, content);
-        Debug.Log($"Post updated: {postId}, New Content: {content}");
+        await _postRepository.UpdatePost(CurrentPost.PostId, content);
+        Debug.Log($"Post updated: {CurrentPost.PostId}, New Content: {content}");
     }
 
-    public async Task DeletePost(string postId)
+    public async Task DeletePost()
     {
-        if (string.IsNullOrEmpty(postId))
+        if (string.IsNullOrEmpty(CurrentPost.PostId))
         {
             throw new Exception("Post ID cannot be null or empty.");
         }
-        Post targetPost = await _postRepository.GetPost(postId);
+
         string requesterId = AccountManager.Instance.MyAccount.Email;
-        if (targetPost.AuthorId != requesterId)
+        if (CurrentPost == null || CurrentPost.AuthorId != requesterId)
         {
-            throw new Exception("You do not have permission to delete this post.");
+            throw new Exception("You do not have permission to update this post.");
         }
-        await _postRepository.DeletePost(postId);
-        Debug.Log($"Post deleted: {postId}");
+        await _postRepository.DeletePost(CurrentPost.PostId);
+        Debug.Log($"Post deleted: {CurrentPost.PostId}");
+    }
+
+    public void SetCurrentPost(Post post)
+    {
+        if (post == null)
+        {
+            Debug.LogWarning("선택된 포스트가 null입니다.");
+            return;
+        }
+
+        CurrentPost = post;
+        Debug.Log($"CurrentPost 설정됨: {post.Title} (ID: {post.PostId})");
     }
 }

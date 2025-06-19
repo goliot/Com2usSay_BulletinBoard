@@ -4,24 +4,30 @@ using System.Collections.Generic;
 [FirestoreData]
 public class Like
 {
-    [FirestoreProperty] private List<string> _likedUserIds { get; set; }
-    public HashSet<string> LikedUserIds { get; private set; }
+    [FirestoreProperty]
+    private List<string> _likedUserIds { get; set; } = new List<string>();
+
+    public HashSet<string> LikedUserIds { get; private set; } = new HashSet<string>();
+
     public int LikeCount => _likedUserIds.Count;
 
     public Like() { }
 
     public Like(List<string> likedUserIds)
     {
-        _likedUserIds = likedUserIds;
+        _likedUserIds = likedUserIds ?? new List<string>();
+        SyncHashSet();
+    }
+
+    // Firestore 역직렬화 이후, 호출해서 해시셋 동기화
+    public void SyncHashSet()
+    {
         LikedUserIds = new HashSet<string>(_likedUserIds);
     }
 
     public void AddLike(string userId)
     {
-        if(IsLikedBy(userId))
-        {
-            return;
-        }
+        if (IsLikedBy(userId)) return;
 
         _likedUserIds.Add(userId);
         LikedUserIds.Add(userId);
@@ -32,11 +38,6 @@ public class Like
         return LikedUserIds.Contains(userId);
     }
 
-    /// <summary>
-    /// 얘는 나중에 UI쪽으로 옮긴다
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public bool ToggleLike(string userId)
     {
         if (LikedUserIds.Contains(userId))

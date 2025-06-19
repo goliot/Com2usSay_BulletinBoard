@@ -26,6 +26,7 @@ public class PostManagerTest : MonoBehaviour
         if (fetchedPost != null)
         {
             Debug.Log($"📥 게시글 조회 성공 - 제목: {fetchedPost.Title}, 작성자: {fetchedPost.AuthorId}");
+            Debug.Log($"좋아요 : {fetchedPost.Like.LikeCount}");
         }
 
         // 3. 게시글 수정

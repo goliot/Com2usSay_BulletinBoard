@@ -11,12 +11,14 @@ public class Post
     [FirestoreProperty] public string Content { get; set; }
     [FirestoreProperty] public Timestamp CreatedAt { get; set; }
     public List<Comment> CommentList { get; set; } = new List<Comment>();
-    public Like like { get; set; } //= new Like();
+    public int CommentCount => CommentList.Count;
+    public Like Like { get; set; } //= new Like();
+    public int LikeCount => Like.LikeCount;
 
     public Post()
     {
         CommentList = new List<Comment>();
-        like = new Like(new List<string>());
+        Like = new Like(new List<string>());
     }
 
     public Post(string postId, string title, string content, string authorId)
