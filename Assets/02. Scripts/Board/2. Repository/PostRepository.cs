@@ -7,12 +7,24 @@ using UnityEngine;
 
 public class PostRepository
 {
-    private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
-    public async Task AddPost(Post post) 
+    private FirebaseFirestore _db = FirebaseInitialize.DB;
+
+    public async Task AddPost(Post post)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(post.PostId);
+
+        // 1. Post 본문 저장
         await docRef.SetAsync(post);
         Debug.Log($"Post Uploaded: {post.PostId}, Title: {post.Title}, Author: {post.AuthorId}");
+
+        // 2. Comments 서브컬렉션 초기화 (빈 상태라면 생략 가능)
+        // 빈 서브컬렉션은 Firestore에 따로 저장할 필요 없음
+
+        // 3. Likes 서브컬렉션 또는 Like 도큐먼트 초기화
+        // 예를 들어 Like 도큐먼트 초기화
+        var likeDoc = docRef.Collection("Likes").Document("likeDoc"); // 임의 ID
+        var likeData = new Like(new List<string>());
+        await likeDoc.SetAsync(likeData);
     }
 
     public async Task<List<Post>> GetPosts(int start, int limit)

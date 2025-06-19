@@ -5,19 +5,19 @@ using System.Collections.Generic;
 [FirestoreData]
 public class Post
 {
-    private readonly string _postId;
-    [FirestoreProperty] public string PostId => _postId; // 문서 ID
-
-    private readonly string _authorId;
-    [FirestoreProperty] public string AuthorId => _authorId;
-
+    [FirestoreProperty] public string PostId { get; set; }
+    [FirestoreProperty] public string AuthorId { get; set; }
     [FirestoreProperty] public string Title { get; set; }
     [FirestoreProperty] public string Content { get; set; }
+    [FirestoreProperty] public Timestamp CreatedAt { get; set; }
+    public List<Comment> CommentList { get; set; } = new List<Comment>();
+    public Like like { get; set; } //= new Like();
 
-    private readonly Timestamp _createdAt;
-    [FirestoreProperty] public Timestamp CreatedAt => _createdAt;
-
-    [FirestoreProperty] public List<Comment> CommentList { get; private set; }
+    public Post()
+    {
+        CommentList = new List<Comment>();
+        like = new Like(new List<string>());
+    }
 
     public Post(string postId, string title, string content, string authorId)
     {
@@ -37,12 +37,17 @@ public class Post
         {
             throw new Exception("작성자 Id가 비었습니다.");
         }
-        _postId = postId;
-        _authorId = authorId;
+        PostId = postId;
+        AuthorId = authorId;
         Title = title;
         Content = content;
 
-        _createdAt = Timestamp.GetCurrentTimestamp();
+        CreatedAt = Timestamp.GetCurrentTimestamp();
         CommentList = new List<Comment>();
+    }
+
+    public void AddComment(Comment comment)
+    {
+        CommentList.Add(comment);
     }
 }

@@ -4,25 +4,20 @@ using System;
 [FirestoreData]
 public class Comment
 {
-    private readonly string _authorId;
-    [FirestoreProperty] public string AuthorId => _authorId;
-    [FirestoreProperty] public string Content { get; private set; }
+    [FirestoreProperty] public string AuthorId { get; set; }
+    [FirestoreProperty] public string Content { get; set; }
+    [FirestoreProperty] public Timestamp CreatedAt { get; set; }
 
-    private readonly Timestamp _createdAt;
-    [FirestoreProperty] public Timestamp CreatedAt => _createdAt;
+    // 기본 생성자 필요 (Firestore용)
+    public Comment() { }
 
     public Comment(string authorId, string content)
     {
-        if (string.IsNullOrEmpty(content))
-        {
-            throw new Exception("내용이 비었습니다.");
-        }
-        if (string.IsNullOrEmpty(authorId))
-        {
-            throw new Exception("작성자 Id가 비었습니다.");
-        }
-        _authorId = authorId;
+        if (string.IsNullOrEmpty(authorId)) throw new Exception("작성자 Id가 비었습니다.");
+        if (string.IsNullOrEmpty(content)) throw new Exception("내용이 비었습니다.");
+
+        AuthorId = authorId;
         Content = content;
-        _createdAt = Timestamp.GetCurrentTimestamp();
+        CreatedAt = Timestamp.GetCurrentTimestamp();
     }
 }

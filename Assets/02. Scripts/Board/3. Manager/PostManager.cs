@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Threading.Tasks;
 
-public class PostManager 
+public class PostManager : Singleton<PostManager>
 {
     private readonly PostRepository _postRepository = new PostRepository();
 
