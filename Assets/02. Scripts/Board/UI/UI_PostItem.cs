@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class UI_PostItem : MonoBehaviour
@@ -18,11 +19,11 @@ public class UI_PostItem : MonoBehaviour
         _post = post;
 
         _autherName.text = await AccountManager.Instance.GetUserNicknameWithEmail(post.AuthorId);
-        _timeInfo.text = post.CreatedAt.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"); // 추후수정
+        _timeInfo.text = post.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt HH:mm", new System.Globalization.CultureInfo("ko-KR"));
         _content.text = post.Content;
         if (post.LikeCount == 0 && post.CommentCount == 0)
         {
-            _likeAndComment.text = "";
+            _likeAndComment.text = "진짜 없어서 그럼";
         }
         else if (post.LikeCount == 0)
         {
@@ -69,5 +70,18 @@ public class UI_PostItem : MonoBehaviour
         await LikeManager.Instance.ToggleLike(_post);
         UIManager.Instance.ShowLoading(false);
         OnChanged?.Invoke();
+    }
+
+    public void OnEditButtonClicked()
+    {
+        if (_post.AuthorId != AccountManager.Instance.MyAccount.Email)
+        {
+            Debug.LogWarning("작성자만 수정할 수 있습니다.");
+            return;
+        }
+        PostManager.Instance.SetCurrentPost(_post);
+        UIManager.Instance.OpenPanel(EUIPanelType.EditPost);
+
+
     }
 }
