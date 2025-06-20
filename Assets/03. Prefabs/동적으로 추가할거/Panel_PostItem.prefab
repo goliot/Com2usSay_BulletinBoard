@@ -180,7 +180,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -349.035}
+  m_AnchoredPosition: {x: 450, y: -218.15}
   m_SizeDelta: {x: 900, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2603111939011871523
@@ -723,7 +723,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 248092304262349550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnItemClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2406489031781679313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +959,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 977676261330875320}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnLikeButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1072692176458845609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2117,6 +2141,7 @@ GameObject:
   - component: {fileID: 3626495684971376359}
   - component: {fileID: 2256674133715399341}
   - component: {fileID: 5507512041932983772}
+  - component: {fileID: 5688144591933273681}
   m_Layer: 5
   m_Name: Panel_PostItem
   m_TagString: Untagged
@@ -2240,6 +2265,19 @@ MonoBehaviour:
   _content: {fileID: 9190910011640909363}
   _likeAndComment: {fileID: 391838315569791538}
   _editOpenPanel: {fileID: 7805037054454571917}
+  _fullHeartImage: {fileID: 1846808667133793074}
+--- !u!114 &5688144591933273681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316272059141174413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1d048319feab844a795f438a69b3aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6548365076237912920
 GameObject:
   m_ObjectHideFlags: 0
