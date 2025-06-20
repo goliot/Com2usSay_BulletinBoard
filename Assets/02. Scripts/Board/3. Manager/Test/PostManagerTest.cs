@@ -15,11 +15,12 @@ public class PostManagerTest : MonoBehaviour
         string title = "likeTest Title";
         string content = "likeTest Content";
 
-        bool registerResult = await AccountManager.Instance.RegisterAsync("nicknameTest@test.com", "liketest", "123456");
-        Debug.Log("회원가입 결과: " + registerResult);
+        AccountResult registerResult = await AccountManager.Instance.RegisterAsync("nicknameTest@test.com", "liketest", "123456");
+        Debug.Log("회원가입 결과: " + registerResult.ErrorMessage);
 
-        bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
-        Debug.Log("로그인 결과: " + loginResult);
+        //bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
+        AccountResult loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
+        Debug.Log("로그인 결과: " + loginResult.ErrorMessage);
 
         // 1. 게시글 생성
         Post newPost = new Post(testPostId, title, content, AccountManager.Instance.MyAccount.Email);

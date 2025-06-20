@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
 
         if (_uiRoot == null)
         {
-            var canvas = FindObjectOfType<Canvas>();
+            var canvas = FindAnyObjectByType<Canvas>();
             _uiRoot = canvas != null ? canvas.transform : transform;
         }
 

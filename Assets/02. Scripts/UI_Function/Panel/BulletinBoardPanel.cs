@@ -38,11 +38,11 @@ public class BulletinBoardPanel : BasePanel
     {
         // TODO: 이 부분에 FirebaseService.LoadAllPostsAsync() 호출 등으로 데이터를 가져오기
         List<PostData> posts = new List<PostData>
-    {
-      // 임시 더미 데이터
-      new PostData { PostId="1", AuthorName="Alice", TimeInfo="1h 전", Content="첫 번째 글입니다.", LikeCount=5, CommentCount=2 },
-      new PostData { PostId="2", AuthorName="Bob",   TimeInfo="2h 전", Content="두 번째 글입니다.", LikeCount=3, CommentCount=1 },
-    };
+        {
+          // 임시 더미 데이터
+          new PostData { PostId="1", AuthorName="Alice", TimeInfo="1h 전", Content="첫 번째 글입니다.", LikeCount=5, CommentCount=2 },
+          new PostData { PostId="2", AuthorName="Bob",   TimeInfo="2h 전", Content="두 번째 글입니다.", LikeCount=3, CommentCount=1 },
+        };
 
         //  화면 갱신
         foreach (var go in _spawnedItems) Destroy(go);

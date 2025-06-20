@@ -9,6 +9,7 @@ using TMPro;
 public class RegisterPanel : BasePanel
 {
     [SerializeField] private TMP_InputField emailField;
+    [SerializeField] private TMP_InputField nicknameField;
     [SerializeField] private TMP_InputField passwordField;
     [SerializeField] private TMP_InputField passwordConfirmField;
     [SerializeField] private Button registerButton;
@@ -24,14 +25,16 @@ public class RegisterPanel : BasePanel
     {
         base.OnShow(parameter);
         emailField.text = string.Empty;
+        nicknameField.text = string.Empty;
         passwordField.text = string.Empty;
         passwordConfirmField.text = string.Empty;
         registerButton.interactable = true;
     }
 
-    private void OnRegisterClicked()
+    private async void OnRegisterClicked()
     {
         string email = emailField.text;
+        string nickname = nicknameField.text;
         string pwd = passwordField.text;
         string pwdConfirm = passwordConfirmField.text;
 
@@ -46,13 +49,24 @@ public class RegisterPanel : BasePanel
             return;
         }
 
-        // TODO: 실제 회원가입 로직 연동
         Debug.Log($"Register attempt: {email}");
         registerButton.interactable = false;
 
-        // 회원가입 성공 시
-        UIManager.Instance.ClosePanel();            // 현재 Register 패널 닫고
-        UIManager.Instance.OpenPanel("Login");   // Login 화면으로 이동
+        AccountResult registerResult = await AccountManager.Instance.RegisterAsync(email, nickname, pwd);
+
+        if (registerResult.Success)
+        {
+            // 회원가입 성공 시
+            UIManager.Instance.ClosePanel();            // 현재 Register 패널 닫고
+            UIManager.Instance.OpenPanel("Login");   // Login 화면으로 이동
+        }
+        else
+        {
+            registerButton.interactable = true;
+            Debug.LogError(registerResult.ErrorMessage);
+            return;
+        }
+
     }
 
     private void OnCancelClicked()

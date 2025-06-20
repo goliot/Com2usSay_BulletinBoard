@@ -48,8 +48,19 @@ public class LoginPanel : BasePanel
             Debug.LogWarning("Email or Password is empty.");
         }
 
-        await AccountManager.Instance.LoginAsync(email, password);
+        AccountResult result = await AccountManager.Instance.LoginAsync(email, password);
         Debug.Log($"Login attempt: {email}");        
+
+        if(result.Success)
+        {
+
+        }
+        else
+        {
+            //UI로도 띄우기
+            Debug.Log(result.ErrorMessage);
+            loginButton.interactable = true;
+        }
     }
 
     private void OnRegisterClicked()

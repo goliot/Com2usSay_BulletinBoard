@@ -7,23 +7,23 @@ public class AccountManagerTest : MonoBehaviour
     {
         await FirebaseInitialize.WaitForInitializationAsync();
 
-        // È¸¿ø°¡ÀÔ Å×½ºÆ®
-        bool registerResult = await AccountManager.Instance.RegisterAsync("liketest@test.com", "liketest", "123456");
-        Debug.Log("È¸¿ø°¡ÀÔ °á°ú: " + registerResult);
+        // íšŒì›ê°€ì… í…ŒìŠ¤íŠ¸
+        AccountResult registerResult = await AccountManager.Instance.RegisterAsync("liketest@test.com", "liketest", "123456");
+        Debug.Log("íšŒì›ê°€ì… ê²°ê³¼: " + registerResult);
 
-        // ·Î±×ÀÎ Å×½ºÆ®
-        bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
-        Debug.Log("·Î±×ÀÎ °á°ú: " + loginResult);
+        // ë¡œê·¸ì¸ í…ŒìŠ¤íŠ¸
+        AccountResult loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
+        Debug.Log("ë¡œê·¸ì¸ ê²°ê³¼: " + loginResult);
 
-        if (loginResult)
+        if (loginResult.Success)
         {
-            // ´Ğ³×ÀÓ º¯°æ Å×½ºÆ®
+            // ë‹‰ë„¤ì„ ë³€ê²½ í…ŒìŠ¤íŠ¸
             bool changeNickResult = await AccountManager.Instance.ChangeMyNicknameAsync("newNick");
-            Debug.Log("´Ğ³×ÀÓ º¯°æ °á°ú: " + changeNickResult);
+            Debug.Log("ë‹‰ë„¤ì„ ë³€ê²½ ê²°ê³¼: " + changeNickResult);
 
-            // ·Î±×¾Æ¿ô Å×½ºÆ®
+            // ë¡œê·¸ì•„ì›ƒ í…ŒìŠ¤íŠ¸
             AccountManager.Instance.Logout();
-            Debug.Log("·Î±×¾Æ¿ô ¿Ï·á");
+            Debug.Log("ë¡œê·¸ì•„ì›ƒ ì™„ë£Œ");
         }
     }
 }
