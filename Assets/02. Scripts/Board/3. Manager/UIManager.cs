@@ -13,6 +13,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _panel_WritePost;      // 글 쓰기
     [SerializeField] private GameObject _panel_EditPost;       // 글 수정
 
+    [SerializeField] private GameObject _panel_Loading;
+
     private Dictionary<EUIPanelType, GameObject> _panels;
 
     public enum EUIPanelType
@@ -63,8 +65,13 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void SetWarningMessage(string message)
+    public void ShowError(string message)
     {
         _warningMessageText.text = message;
+    }
+
+    public void ShowLoading(bool flag)
+    {
+        _panel_Loading.SetActive(flag);
     }
 }
