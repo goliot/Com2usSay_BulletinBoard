@@ -1,9 +1,21 @@
+using TMPro;
 using UnityEngine;
 
 public class UI_Login : MonoBehaviour
 {
-    public async void OnLoginButtonClicked(string email, string password)
+    [SerializeField] private TMP_InputField _emailInputField;
+    [SerializeField] private TMP_InputField _passwordInputField;
+
+    public void OnClickGoToRegister()
     {
+        UIManager.Instance.OpenPanel(EUIPanelType.Register);
+    }
+
+    public async void OnLoginButtonClicked()
+    {
+        string email = _emailInputField.text;
+        string password = _passwordInputField.text;
+
         UIManager.Instance.ShowLoading(true);
 
         AccountResult result = await AccountManager.Instance.LoginAsync(email, password);
@@ -19,6 +31,5 @@ public class UI_Login : MonoBehaviour
             UIManager.Instance.ShowError(result.ErrorMessage);
             UIManager.Instance.OpenPanel(EUIPanelType.Login);
         }
-        // 실패 시는 onFail 콜백에서 처리되므로 else 생략 가능
     }
 }

@@ -47,7 +47,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OpenPanel(EUIPanelType panelType)
     {
-        CloseAllPanels();
+        ShowError(string.Empty);
         foreach (var pair in _panels)
         {
             pair.Value.SetActive(pair.Key == panelType);
@@ -59,6 +59,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void CloseAllPanels()
     {
+        ShowError(string.Empty);
         foreach (var panel in _panels.Values)
         {
             panel.SetActive(false);
@@ -72,6 +73,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ShowLoading(bool flag)
     {
+        ShowError(string.Empty);
         _panel_Loading.SetActive(flag);
     }
 }
