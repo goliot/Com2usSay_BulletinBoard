@@ -10,17 +10,19 @@ public class CommentManager : Singleton<CommentManager>
     private CommentRepository _repository = new CommentRepository();
 
 
-    public async Task AddComment(Post post, CommentDTO comment)
+    public async Task<bool> AddComment(Post post, CommentDTO comment)
     {
         if (post == null || comment == null)
         {
             Debug.LogError("PostDTO 또는 CommentDTO가 null입니다.");
-            return;
+            return false;
         }
 
         await _repository.AddComment(post, comment);
         Debug.Log($"댓글 추가 완료 - PostId: {post.PostId}");
         OnCommentChanged?.Invoke();
+
+        return true;
     }
 
     /// <summary>

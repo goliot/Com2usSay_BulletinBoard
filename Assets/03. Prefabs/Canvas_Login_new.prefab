@@ -13165,7 +13165,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 8708452806929719011}
   m_TextViewport: {fileID: 2773766723558294784}
   m_TextComponent: {fileID: 8708452806929719011}
   m_Placeholder: {fileID: 7643596654975268084}
@@ -14359,7 +14359,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7126686892670898465}
   m_TextViewport: {fileID: 1971249198134467682}
   m_TextComponent: {fileID: 7126686892670898465}
   m_Placeholder: {fileID: 2961793828444580822}
@@ -16325,7 +16325,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 81569251739340403}
   m_TextViewport: {fileID: 526180973447766929}
   m_TextComponent: {fileID: 81569251739340403}
   m_Placeholder: {fileID: 2642625732812649747}
@@ -18505,7 +18505,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3534202129873005368}
   m_TextViewport: {fileID: 2813922608506023965}
   m_TextComponent: {fileID: 3534202129873005368}
   m_Placeholder: {fileID: 7498565192686504657}

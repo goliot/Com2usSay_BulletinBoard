@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AccountRepository
 {
-    private FirebaseFirestore _db = FirebaseInitialize.DB;
+    private FirebaseFirestore _db => FirebaseInitialize.DB;
     private FirebaseAuth _auth => FirebaseInitialize.Auth;
 
     private Account _myAccount;

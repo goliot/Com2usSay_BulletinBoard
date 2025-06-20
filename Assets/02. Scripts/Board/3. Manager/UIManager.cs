@@ -52,6 +52,8 @@ public class UIManager : Singleton<UIManager>
         {
             pair.Value.SetActive(pair.Key == panelType);
         }
+
+        _warningMessageText.gameObject.SetActive(_panel_Login.activeSelf && _panel_Login.activeSelf);
     }
 
     /// <summary>
