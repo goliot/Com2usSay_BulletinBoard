@@ -10,6 +10,8 @@ public class UI_PostItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _content;
     [SerializeField] private TextMeshProUGUI _likeAndComment;
     [SerializeField] private GameObject _editOpenPanel;
+
+    [SerializeField] private GameObject _fullHeartImage;
     public event Action OnChanged;
 
     private Post _post;
@@ -37,6 +39,8 @@ public class UI_PostItem : MonoBehaviour
         {
             _likeAndComment.text = $"좋아요 {post.LikeCount}개, 댓글 {post.CommentCount}개";
         }
+
+        _fullHeartImage.SetActive(LikeManager.Instance.IsLikedByMe(_post));
     }
 
     public void OnEditOpenPanelClicked()
@@ -66,10 +70,12 @@ public class UI_PostItem : MonoBehaviour
 
     public async void OnLikeButtonClicked()
     {
-        UIManager.Instance.ShowLoading(true);
-        await LikeManager.Instance.ToggleLike(_post);
-        UIManager.Instance.ShowLoading(false);
-        OnChanged?.Invoke();
+        //UIManager.Instance.ShowLoading(true);
+        //await LikeManager.Instance.ToggleLike(_post);
+        //UIManager.Instance.ShowLoading(false);
+        //OnChanged?.Invoke();
+
+        _fullHeartImage.SetActive(await LikeManager.Instance.ToggleLike(_post));
     }
 
     public void OnEditButtonClicked()

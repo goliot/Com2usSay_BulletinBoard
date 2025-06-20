@@ -29,6 +29,6 @@ public class LikeManager : Singleton<LikeManager>
 
     public bool IsLikedByMe(Post post)
     {
-        return post.Like?.IsLikedBy(AccountManager.Instance.MyAccount.Nickname) ?? false;
+        return post.Like?.IsLikedBy(AccountManager.Instance.MyAccount.Email) ?? false;
     }
 }

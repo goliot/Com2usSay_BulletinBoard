@@ -27,13 +27,13 @@ public class PostRepository
         await likeDoc.SetAsync(likeData);
     }
 
-    public async Task<List<PostDTO>> GetPosts(int start, int limit)
+    public async Task<List<Post>> GetPosts()
     {
         Query query = _db.Collection("Posts")
-                         .OrderByDescending("CreatedAt")
-                         .Limit(limit);
+                         .OrderByDescending("CreatedAt");
+                         //.Limit(limit);
 
-        if (start > 0)
+        /*if (start > 0)
         {
             QuerySnapshot tempSnapshot = await _db.Collection("Posts")
                                                   .OrderByDescending("CreatedAt")
@@ -44,17 +44,23 @@ public class PostRepository
             {
                 query = query.StartAfter(cursor);
             }
-        }
+        }*/
 
         QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
         List<Post> postList = new List<Post>();
         foreach (var doc in snapshot.Documents)
         {
-            postList.Add(doc.ConvertTo<Post>());
+            Post post = doc.ConvertTo<Post>();
+            LikeDTO like = await LikeManager.Instance.LoadLikeData(post.ToDto());
+            List<CommentDTO> comments = await CommentManager.Instance.GetComments(post.ToDto());
+
+            post.SetLike(like.ToEntity());
+            post.SetComment(comments.ConvertAll((item) => item.ToEntity()));
+            postList.Add(post);
         }
 
-        return postList.ConvertAll((item) => item.ToDto());
+        return postList;
     }
 
 
