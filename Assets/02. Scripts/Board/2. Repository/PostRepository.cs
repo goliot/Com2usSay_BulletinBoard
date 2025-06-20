@@ -9,12 +9,12 @@ public class PostRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task AddPost(Post post)
+    public async Task AddPost(PostDTO post)
     {
         DocumentReference docRef = _db.Collection("Posts").Document(post.PostId);
 
         // 1. Post 본문 저장
-        await docRef.SetAsync(post);
+        await docRef.SetAsync(post.ToEntity());
         Debug.Log($"Post Uploaded: {post.PostId}, Title: {post.Title}, Author: {post.AuthorId}");
 
         // 2. Comments 서브컬렉션 초기화 (빈 상태라면 생략 가능)

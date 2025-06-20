@@ -15,21 +15,22 @@ public class PostManagerTest : MonoBehaviour
         string title = "likeTest Title";
         string content = "likeTest Content";
 
-        bool registerResult = await AccountManager.Instance.RegisterAsync("nicknameTest@test.com", "liketest", "123456");
-        Debug.Log("회원가입 결과: " + registerResult);
+        AccountResult registerResult = await AccountManager.Instance.RegisterAsync("nicknameTest@test.com", "liketest", "123456");
+        Debug.Log("회원가입 결과: " + registerResult.ErrorMessage);
 
-        bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
-        Debug.Log("로그인 결과: " + loginResult);
+        //bool loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
+        AccountResult loginResult = await AccountManager.Instance.LoginAsync("liketest@test.com", "123456");
+        Debug.Log("로그인 결과: " + loginResult.ErrorMessage);
 
         // 1. 게시글 생성
         Post newPost = new Post(testPostId, title, content, AccountManager.Instance.MyAccount.Email);
         PostDTO newPostDTO = new PostDTO(newPost);
-        await _repository.AddPost(newPost);
+        await _repository.AddPost(newPostDTO);
         Debug.Log("✅ 게시글 등록 완료");
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
@@ -41,7 +42,7 @@ public class PostManagerTest : MonoBehaviour
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
@@ -67,6 +68,8 @@ public class PostManagerTest : MonoBehaviour
         List<PostDTO> postList = await _repository.GetPosts(0, 10);
         Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
+        await TestAddAndFetchComments(newPost);
+
         /*// 6. 게시글 삭제
         await _repository.DeletePost(testPostId);
         Debug.Log("🗑 게시글 삭제 완료");
@@ -74,5 +77,35 @@ public class PostManagerTest : MonoBehaviour
         // 7. 삭제 후 확인
         Post deletedPost = await _repository.GetPost(testPostId);
         Debug.Log(deletedPost == null ? "❌ 게시글이 성공적으로 삭제됨" : "⚠ 게시글 삭제 실패");*/
+    }
+
+    private async Task TestAddAndFetchComments(Post post)
+    {
+        var commentManager = CommentManager.Instance;
+
+        // 댓글 생성
+        string commentId = System.Guid.NewGuid().ToString();
+        string commentContent = "이것은 테스트 댓글입니다.";
+        string authorId = AccountManager.Instance.MyAccount.Email;
+
+        CommentDTO newComment = new Comment
+        {
+            CommentId = commentId,
+            AuthorId = authorId,
+            Content = commentContent,
+            CreatedAt = Firebase.Firestore.Timestamp.GetCurrentTimestamp()
+        }.ToDto();
+
+        await commentManager.AddComment(post, newComment);
+        Debug.Log($"✅ 댓글 추가 완료: {commentContent}");
+
+        // 댓글 목록 조회
+        List<CommentDTO> comments = await commentManager.GetComments(post.ToDto());
+        Debug.Log($"📥 댓글 조회 성공, 총 댓글 수: {comments.Count}");
+
+        foreach (var comment in comments)
+        {
+            Debug.Log($" - 댓글: {comment.Content} (작성자: {comment.AuthorId})");
+        }
     }
 }

@@ -9,11 +9,12 @@ public class CommentRepository
 {
     private FirebaseFirestore _db = FirebaseInitialize.DB;
 
-    public async Task AddComment(PostDTO post, CommentDTO comment)
+    public async Task AddComment(Post post, CommentDTO comment)
     {
         var commentsRef = _db.Collection("Posts").Document(post.PostId).Collection("Comments");
         var newCommentRef = commentsRef.Document();
-        await newCommentRef.SetAsync(comment);
+        await newCommentRef.SetAsync(comment.ToEntity());
+        post.AddComment(comment);
     }
 
     public async Task<List<CommentDTO>> GetComments(PostDTO post)
@@ -28,8 +29,9 @@ public class CommentRepository
         return comments;
     }
 
-    public async Task DeleteComment(PostDTO post, CommentDTO comment)
+    public async Task DeleteComment(Post post, CommentDTO comment)
     {
         await _db.Collection("Posts").Document(post.PostId).Collection("Comments").Document(comment.CommentId).DeleteAsync();
+        post.DeleteComment(comment);
     }
 }

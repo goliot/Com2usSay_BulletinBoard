@@ -29,7 +29,7 @@ public class RecentPostPanel : BasePanel
         if (_contentParent == null) Debug.LogError("[RecentPostPanel] _contentParent 누락");
         if (_recentPostPrefab == null) Debug.LogError("[RecentPostPanel] _recentPostPrefab 누락");
 
-        _backButton.onClick.AddListener(() => UIManager.Instance.ClosePanel());
+        _backButton.onClick.AddListener(() => UIManagerFuck.Instance.ClosePanel());
         _orderButton.onClick.AddListener(OnOrderClicked);
 
         _isInitialized = true;
@@ -54,7 +54,7 @@ public class RecentPostPanel : BasePanel
                 ctrl.Setup(text, () =>
                 {
                     // Edit 버튼 누르면 해당 게시글 수정으로 이동
-                    UIManager.Instance.OpenPanel("Panel_EditPost", /* postId or text */ text);
+                    UIManagerFuck.Instance.OpenPanel("Panel_EditPost", /* postId or text */ text);
                 });
             }
             _spawnedItems.Add(go);

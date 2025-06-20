@@ -16,8 +16,15 @@ public class PostManager : Singleton<PostManager>
         Post newpost = new Post(postId, title, content, authorId);
         PostDTO newpostDTO = new PostDTO(newpost);
 
-        await _postRepository.AddPost(newpost);
+        await _postRepository.AddPost(newpostDTO);
         Debug.Log($"Post created: {newpost.PostId}, Title: {newpost.Title}, Author: {newpost.AuthorId}");
+    }
+
+    public async Task<PostDTO> GetPost(string postId)
+    {
+        PostDTO post = await _postRepository.GetPost(postId);
+
+        return post;
     }
 
     public async Task UpdatePost(string content)
@@ -71,6 +78,6 @@ public class PostManager : Singleton<PostManager>
 
     public async Task ToggleLikeOnCurrentPost()
     {
-        await LikeManager.Instance.ToggleLike(_currentPost);
+        await LikeManager.Instance.ToggleLike(_currentPost.ToDto());
     }
 }

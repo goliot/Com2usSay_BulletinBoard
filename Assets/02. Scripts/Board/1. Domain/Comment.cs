@@ -22,6 +22,14 @@ public class Comment
         CreatedAt = Timestamp.GetCurrentTimestamp();
     }
 
+    public Comment(CommentDTO dto)
+    {
+        CommentId = dto.CommentId;
+        AuthorId = dto.AuthorId;
+        Content = dto.Content;
+        CreatedAt = dto.CreatedAt;
+    }
+
     public CommentDTO ToDto()
     {
         return new CommentDTO(this);

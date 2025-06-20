@@ -2,21 +2,23 @@ using UnityEngine;
 
 public class UI_Login : MonoBehaviour
 {
-    /*public async void OnLoginButtonClicked(string email, string password)
+    public async void OnLoginButtonClicked(string email, string password)
     {
         UIManager.Instance.ShowLoading(true);
 
-        bool success = await AccountManager.Instance.LoginAsync(email, password, errorMessage =>
-        {
-            UIManager.Instance.ShowError(errorMessage); // ½ÇÆĞ ½Ã ¿¡·¯ ¸Ş½ÃÁö Ãâ·Â
-        });
+        AccountResult result = await AccountManager.Instance.LoginAsync(email, password);
 
         UIManager.Instance.ShowLoading(false);
 
-        if (success)
+        if (result.Success)
         {
-            UIManager.Instance.ShowMainUI(); // ¼º°ø ½Ã ¸ŞÀÎ UI·Î ÀüÈ¯
+            UIManager.Instance.OpenPanel(EUIPanelType.BulletinBoard); // ì„±ê³µ ì‹œ ë©”ì¸ UIë¡œ ì „í™˜
         }
-        // ½ÇÆĞ ½Ã´Â onFail Äİ¹é¿¡¼­ Ã³¸®µÇ¹Ç·Î else »ı·« °¡´É
-    }*/
+        else
+        {
+            UIManager.Instance.ShowError(result.ErrorMessage);
+            UIManager.Instance.OpenPanel(EUIPanelType.Login);
+        }
+        // ì‹¤íŒ¨ ì‹œëŠ” onFail ì½œë°±ì—ì„œ ì²˜ë¦¬ë˜ë¯€ë¡œ else ìƒëµ ê°€ëŠ¥
+    }
 }

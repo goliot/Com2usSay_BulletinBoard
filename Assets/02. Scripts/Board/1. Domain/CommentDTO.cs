@@ -14,4 +14,9 @@ public class CommentDTO
         Content = comment.Content;
         CreatedAt = comment.CreatedAt;
     }
+
+    public Comment ToEntity()
+    {
+        return new Comment(this);
+    }
 }

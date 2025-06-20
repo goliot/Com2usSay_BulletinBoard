@@ -32,12 +32,12 @@ public class PostItemController : MonoBehaviour
     /// <summary>
     /// 전달된 데이터를 텍스트에 바인딩하고, 버튼 리스너를 연결합니다.
     /// </summary>
-    public void Setup(PostData data)
+    public void Setup(PostDTO data)
     {
         InitIfNeeded();
 
-        _authorNameText.text = data.AuthorName;
-        _timeInfoText.text = data.TimeInfo;
+        _authorNameText.text = data.AuthorId;
+        _timeInfoText.text = data.CreatedAt.ToString();
         _contentText.text = data.Content;
         _likeCommentCountText.text = $"{data.LikeCount}♥  {data.CommentCount}💬";
 
@@ -48,7 +48,7 @@ public class PostItemController : MonoBehaviour
 
         // 댓글 버튼 → 상세 Post 패널 오픈 (PostId 전달)
         _commentButton.onClick.AddListener(() =>
-          UIManager.Instance.OpenPanel("Panel_Post", data.PostId));
+          UIManagerFuck.Instance.OpenPanel("Panel_Post", data.PostId));
 
         // 편집 팝업 토글
         _editPanelButton.onClick.AddListener(() =>
@@ -60,6 +60,6 @@ public class PostItemController : MonoBehaviour
 
         // 본문으로 이동
         _toPostButton.onClick.AddListener(() =>
-          UIManager.Instance.OpenPanel("Panel_Post", data.PostId));
+          UIManagerFuck.Instance.OpenPanel("Panel_Post", data.PostId));
     }
 }

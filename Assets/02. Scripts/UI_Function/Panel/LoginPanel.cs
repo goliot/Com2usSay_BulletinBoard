@@ -32,27 +32,39 @@ public class LoginPanel : BasePanel
         base.OnHide();
     }
 
-    private void OnLoginClicked()
+    private async void OnLoginClicked()
     {
         // TODO: 실제 로그인 로직 연동
         string email = emailField.text;
         string password = passwordField.text;
-        Debug.Log($"Login attempt: {email}");
 
-        // 임시: 이메일/비번이 비어있지 않으면 성공 처리
         if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
         {
             loginButton.interactable = false;
-            UIManager.Instance.ShowDefaultPanel();
+            UIManagerFuck.Instance.ShowDefaultPanel();
         }
         else
         {
             Debug.LogWarning("Email or Password is empty.");
         }
+
+        AccountResult result = await AccountManager.Instance.LoginAsync(email, password);
+        Debug.Log($"Login attempt: {email}");        
+
+        if(result.Success)
+        {
+
+        }
+        else
+        {
+            //UI로도 띄우기
+            Debug.Log(result.ErrorMessage);
+            loginButton.interactable = true;
+        }
     }
 
     private void OnRegisterClicked()
     {
-        UIManager.Instance.OpenPanel("Register");
+        UIManagerFuck.Instance.OpenPanel("Register");
     }
 }

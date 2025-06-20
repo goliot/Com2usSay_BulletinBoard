@@ -1,6 +1,19 @@
 using System.Threading.Tasks;
 using System;
 
+public struct AccountResult
+{
+    public bool Success { get; }
+    public string ErrorMessage { get; }
+
+    public AccountResult(bool success, string errorMessage = null)
+    {
+        Success = success;
+        ErrorMessage = errorMessage;
+    }
+}
+
+
 public class AccountManager : Singleton<AccountManager>
 {
     public event Action OnLoginSuccess;
@@ -10,29 +23,25 @@ public class AccountManager : Singleton<AccountManager>
 
     public AccountDTO MyAccount => _repository.MyAccount;
 
-    public async Task<bool> RegisterAsync(string email, string nickname, string password, Action<string> onFail = null)
+    public async Task<AccountResult> RegisterAsync(string email, string nickname, string password)
     {
-        var (success, errorMessage) = await _repository.RegisterAsync(email, nickname, password);
-        if (!success)
-        {
-            onFail?.Invoke(errorMessage);
-        }
-        return success;
+        AccountResult result = await _repository.RegisterAsync(email, nickname, password);
+
+        return result;
     }
 
-    public async Task<bool> LoginAsync(string email, string password, Action<string> onFail = null)
+    public async Task<AccountResult> LoginAsync(string email, string password)
     {
         var (success, errorMessage) = await _repository.LoginAsync(email, password);
+
         if (success)
         {
             OnLoginSuccess?.Invoke();
         }
-        else
-        {
-            onFail?.Invoke(errorMessage);
-        }
-        return success;
+
+        return new AccountResult(success, errorMessage);
     }
+
 
     public void Logout()
     {

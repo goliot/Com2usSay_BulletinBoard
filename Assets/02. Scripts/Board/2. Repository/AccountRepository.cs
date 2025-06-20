@@ -16,29 +16,29 @@ public class AccountRepository
         {
             if (_myAccount == null)
             {
-                throw new InvalidOperationException("ÇöÀç ·Î±×ÀÎµÈ °èÁ¤ÀÌ ¾ø½À´Ï´Ù.");
+                throw new InvalidOperationException("í˜„ì¬ ë¡œê·¸ì¸ëœ ê³„ì •ì´ ì—†ìŠµë‹ˆë‹¤.");
             }
             return _myAccount.ToDto();
         }
     }
 
     #region Register
-    // ´Ğ³×ÀÓ Áßº¹ Ã¼Å©
+    // ë‹‰ë„¤ì„ ì¤‘ë³µ ì²´í¬
     private async Task<bool> IsNicknameTakenAsync(string nickname)
     {
         var docRef = _db.Collection("Nicknames").Document(nickname);
         var snapshot = await docRef.GetSnapshotAsync();
-        return snapshot.Exists; // ¹®¼­°¡ ÀÖÀ¸¸é ÀÌ¹Ì »ç¿ëÁß
+        return snapshot.Exists; // ë¬¸ì„œê°€ ìˆìœ¼ë©´ ì´ë¯¸ ì‚¬ìš©ì¤‘
     }
 
-    public async Task<(bool isSuccess, string errorMessage)> RegisterAsync(string email, string nickname, string password)
+    public async Task<AccountResult> RegisterAsync(string email, string nickname, string password)
     {
         await FirebaseInitialize.WaitForInitializationAsync();
 
-        // ´Ğ³×ÀÓ Áßº¹ Ã¼Å©
+        // ë‹‰ë„¤ì„ ì¤‘ë³µ ì²´í¬
         if (await IsNicknameTakenAsync(nickname))
         {
-            return (false, "ÀÌ¹Ì »ç¿ë ÁßÀÎ ´Ğ³×ÀÓÀÔ´Ï´Ù.");
+            return new AccountResult(false, "ì´ë¯¸ ì‚¬ìš© ì¤‘ì¸ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
         }
 
         try
@@ -46,23 +46,23 @@ public class AccountRepository
             var result = await _auth.CreateUserWithEmailAndPasswordAsync(email, password);
             await SetInitialNicknameAsync(result.User, nickname);
 
-            // ´Ğ³×ÀÓ ÄÃ·º¼Ç¿¡ ´Ğ³×ÀÓ µî·Ï (Áßº¹ ¹æÁö¿ë)
+            // ë‹‰ë„¤ì„ ì»¬ë ‰ì…˜ì— ë‹‰ë„¤ì„ ë“±ë¡ (ì¤‘ë³µ ë°©ì§€ìš©)
             var docRef = _db.Collection("Nicknames").Document(nickname);
             await docRef.SetAsync(new { UserId = result.User.UserId });
 
-            Debug.Log($"È¸¿ø°¡ÀÔ ¼º°ø : {result.User.UserId}");
-            return (true, null);
+            Debug.Log($"íšŒì›ê°€ì… ì„±ê³µ : {result.User.UserId}");
+            return new AccountResult(true, null);
         }
         catch (Exception ex)
         {
-            Debug.LogError($"È¸¿ø°¡ÀÔ ½ÇÆĞ: {ex.Message}");
-            return (false, ex.Message);
+            Debug.LogError($"íšŒì›ê°€ì… ì‹¤íŒ¨: {ex.Message}");
+            return new AccountResult(false, ex.Message);
         }
     }
 
 
     /// <summary>
-    /// È¸¿ø°¡ÀÔ ½Ã ÃÖÃÊ 1È¸ ¼­¹öÀÇ DisplayNameº¯°æ¿ë
+    /// íšŒì›ê°€ì… ì‹œ ìµœì´ˆ 1íšŒ ì„œë²„ì˜ DisplayNameë³€ê²½ìš©
     /// </summary>
     private async Task SetInitialNicknameAsync(FirebaseUser user, string nickname)
     {
@@ -75,9 +75,9 @@ public class AccountRepository
     }
     #endregion
 
-    #region ·Î±×ÀÎ/·Î±×¾Æ¿ô
+    #region ë¡œê·¸ì¸/ë¡œê·¸ì•„ì›ƒ
     /// <summary>
-    /// ·Î±×ÀÎ
+    /// ë¡œê·¸ì¸
     /// </summary>
     public async Task<(bool isSuccess, string errorMessage)> LoginAsync(string email, string password)
     {
@@ -87,38 +87,38 @@ public class AccountRepository
         {
             var result = await _auth.SignInWithEmailAndPasswordAsync(email, password);
             SetMyAccount(result.User);
-            Debug.Log($"·Î±×ÀÎ ¼º°ø : {result.User.DisplayName} ({result.User.UserId})");
+            Debug.Log($"ë¡œê·¸ì¸ ì„±ê³µ : {result.User.DisplayName} ({result.User.UserId})");
             return (true, null);
         }
         catch (Exception ex)
         {
-            Debug.LogError($"·Î±×ÀÎ ½ÇÆĞ: {ex.Message}");
+            Debug.LogError($"ë¡œê·¸ì¸ ì‹¤íŒ¨: {ex.Message}");
             return (false, ex.Message);
         }
     }
 
 
     /// <summary>
-    /// µ¿±â·Î ·Î±×¾Æ¿ôÀÌ ´õ ¾ÈÁ¤ÀûÀÏ µí ÇÔ
+    /// ë™ê¸°ë¡œ ë¡œê·¸ì•„ì›ƒì´ ë” ì•ˆì •ì ì¼ ë“¯ í•¨
     /// </summary>
     public void Logout()
     {
         if (_auth.CurrentUser == null)
         {
-            Debug.LogWarning("ÀÌ¹Ì ·Î±×¾Æ¿ôµÈ »óÅÂÀÔ´Ï´Ù.");
+            Debug.LogWarning("ì´ë¯¸ ë¡œê·¸ì•„ì›ƒëœ ìƒíƒœì…ë‹ˆë‹¤.");
             return;
         }
 
         _auth.SignOut();
         SetMyAccount(null);
 
-        Debug.Log("·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù.");
+        Debug.Log("ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤.");
     }
     #endregion
 
     #region Nickname
     /// <summary>
-    /// ·Î±×ÀÎ ÈÄ, ÀÚ½ÅÀÇ ´Ğ³×ÀÓ º¯°æ ¿ë
+    /// ë¡œê·¸ì¸ í›„, ìì‹ ì˜ ë‹‰ë„¤ì„ ë³€ê²½ ìš©
     /// </summary>
     public async Task<(bool isSuccess, string errorMessage)> ChangeMyNicknameAsync(string newNickname)
     {
@@ -128,14 +128,14 @@ public class AccountRepository
 
         if (user == null)
         {
-            string msg = "·Î±×ÀÎµÈ À¯Àú°¡ ¾ø½À´Ï´Ù.";
+            string msg = "ë¡œê·¸ì¸ëœ ìœ ì €ê°€ ì—†ìŠµë‹ˆë‹¤.";
             Debug.LogWarning(msg);
             return (false, msg);
         }
 
         if (user.Email != _myAccount.Email)
         {
-            string msg = "À¯Àú Á¤º¸°¡ ´Ù¸¨´Ï´Ù";
+            string msg = "ìœ ì € ì •ë³´ê°€ ë‹¤ë¦…ë‹ˆë‹¤";
             Debug.LogError(msg);
             return (false, msg);
         }
@@ -146,19 +146,19 @@ public class AccountRepository
         {
             await user.UpdateUserProfileAsync(profile);
             _myAccount.SetNickname(newNickname, out string _);
-            Debug.Log($"´Ğ³×ÀÓÀÌ '{newNickname}'(À¸)·Î º¯°æµÇ¾ú½À´Ï´Ù.");
+            Debug.Log($"ë‹‰ë„¤ì„ì´ '{newNickname}'(ìœ¼)ë¡œ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤.");
             return (true, null);
         }
         catch (Exception ex)
         {
-            Debug.LogError("´Ğ³×ÀÓ º¯°æ ½ÇÆĞ: " + ex.Message);
+            Debug.LogError("ë‹‰ë„¤ì„ ë³€ê²½ ì‹¤íŒ¨: " + ex.Message);
             return (false, ex.Message);
         }
     }
     #endregion
 
     /// <summary>
-    /// ³»ºÎÀûÀ¸·Î °¡Áö°í ÀÖ´Â Account °´Ã¼ À¯Áö¿ë
+    /// ë‚´ë¶€ì ìœ¼ë¡œ ê°€ì§€ê³  ìˆëŠ” Account ê°ì²´ ìœ ì§€ìš©
     /// </summary>
     private void SetMyAccount(FirebaseUser user)
     {
