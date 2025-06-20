@@ -32,14 +32,12 @@ public class LoginPanel : BasePanel
         base.OnHide();
     }
 
-    private void OnLoginClicked()
+    private async void OnLoginClicked()
     {
         // TODO: 실제 로그인 로직 연동
         string email = emailField.text;
         string password = passwordField.text;
-        Debug.Log($"Login attempt: {email}");
 
-        // 임시: 이메일/비번이 비어있지 않으면 성공 처리
         if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
         {
             loginButton.interactable = false;
@@ -49,6 +47,9 @@ public class LoginPanel : BasePanel
         {
             Debug.LogWarning("Email or Password is empty.");
         }
+
+        await AccountManager.Instance.LoginAsync(email, password);
+        Debug.Log($"Login attempt: {email}");        
     }
 
     private void OnRegisterClicked()
