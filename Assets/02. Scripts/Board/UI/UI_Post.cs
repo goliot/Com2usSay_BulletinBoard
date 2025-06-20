@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class UI_Post : UI_PopUp
 {
-    private PostDTO _currentPost;
-    public PostDTO CurrentPost => _currentPost;
+    public Post CurrentPost => PostManager.Instance.CurrentPost;
 
     [Header("# Comment")]
     [SerializeField] private Transform CommentParent;
@@ -28,16 +27,7 @@ public class UI_Post : UI_PopUp
 
     private void OnEnable()
     {
-        if(_currentPost == null)
-        {
-            //Post post = new Post("1", TitleText.text, ContentText.text, AuthorIdText.text);
-            //_currentPost = post.ToDto();
-
-            return;
-        }
-        //SetPost(_currentPost);
-        //InitComments();
-        //InitLike();
+        SetPost();
     }
 
     public override void Show() { base.Show(); }
@@ -46,18 +36,25 @@ public class UI_Post : UI_PopUp
     private async void InitComments()
     {
         RefreshComments();
-        List<CommentDTO> comments = await CommentManager.Instance.GetComments(_currentPost);
+        List<CommentDTO> comments = await CommentManager.Instance.GetComments(CurrentPost.ToDto());
         foreach(var comment in comments)
         {
             AddCommentItemUI(comment);
         }
     }
 
-    private void InitLike()
+    private async void InitLike()
     {
-        bool flag = LikeManager.Instance.IsLikedByMe(_currentPost.ToEntity());
-        _fullHeartImage.SetActive(flag);
+        var likeDto = await LikeManager.Instance.LoadLikeData(CurrentPost.ToDto());
+        CurrentPost.SetLike(likeDto.ToEntity()); // 🔥 최신 데이터로 반영
+
+        bool isLiked = likeDto.LikedUserIds.Contains(AccountManager.Instance.MyAccount.Email);
+        _fullHeartImage.SetActive(isLiked);
+
+        LikeCountText.text = likeDto.LikeCount.ToString(); // 초기 진입 시 카운트 반영
     }
+
+
 
     public void OnClickToBoardButton()
     {
@@ -66,45 +63,31 @@ public class UI_Post : UI_PopUp
 
     public async void OnClickLikeButton()
     {
-        bool flag = await LikeManager.Instance.ToggleLike(_currentPost);
+        bool flag = await LikeManager.Instance.ToggleLike(CurrentPost);
 
         _fullHeartImage.SetActive(flag);
-
-        LikeCountText.text = _currentPost.LikeCount.ToString();
+        LikeCountText.text = CurrentPost.LikeCount.ToString(); // 최신 LikeCount 반영
     }
+
 
     public async void OnClickAddCommentButton()
     {
         Comment comment = new Comment(AccountManager.Instance.MyAccount.Email, CommentInputField.text);
-        await CommentManager.Instance.AddComment(_currentPost.ToEntity(), comment.ToDto());
+        await CommentManager.Instance.AddComment(CurrentPost, comment.ToDto());
         CommentInputField.text = string.Empty;
 
         AddCommentItemUI(comment.ToDto());
     }
 
-    public void SetPost(PostDTO post)
+    public void SetPost()
     {
-        _currentPost = post;
-        TitleText.text = post.Title;
-        AuthorIdText.text = post.AuthorId;
-        CreatedAtText.text = post.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt HH:mm", new System.Globalization.CultureInfo("ko-KR"));
-        ContentText.text = post.Content;
-        LikeCountText.text = post.LikeCount.ToString();
+        TitleText.text = CurrentPost.Title;
+        AuthorIdText.text = CurrentPost.AuthorId;
+        CreatedAtText.text = CurrentPost.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt HH:mm", new System.Globalization.CultureInfo("ko-KR"));
+        ContentText.text = CurrentPost.Content;
+        LikeCountText.text = CurrentPost.LikeCount.ToString();
         InitComments();
         InitLike();
-        //ShowComments();
-    }
-
-    private void ShowComments()
-    {
-        List<Comment> comments = _currentPost.CommentList;
-
-        foreach(var comment in comments)
-        {
-            UI_CommentItem item = Instantiate(UI_CommentItem, CommentParent).GetComponent<UI_CommentItem>();
-            item.SetComment(comment.ToDto());
-            _commentItems.Add(item);
-        }
     }
 
     private void AddCommentItemUI(CommentDTO comment)

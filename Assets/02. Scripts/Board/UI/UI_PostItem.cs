@@ -51,7 +51,7 @@ public class UI_PostItem : MonoBehaviour
             return;
         }
 
-        UIManager.Instance.OpenPostPanel(_post.ToDto());
+        UIManager.Instance.OpenPostPanel(_post);
     }
 
 
@@ -66,7 +66,7 @@ public class UI_PostItem : MonoBehaviour
     public async void OnLikeButtonClicked()
     {
         UIManager.Instance.ShowLoading(true);
-        await LikeManager.Instance.ToggleLike(_post.ToDto());
+        await LikeManager.Instance.ToggleLike(_post);
         UIManager.Instance.ShowLoading(false);
         OnChanged?.Invoke();
     }
