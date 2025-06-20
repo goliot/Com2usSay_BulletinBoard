@@ -3,6 +3,16 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 
+public enum EUIPanelType
+{
+    Login,
+    Register,
+    BulletinBoard,
+    Post,
+    WritePost,
+    EditPost
+}
+
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private TextMeshProUGUI _warningMessageText;
@@ -16,16 +26,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _panel_Loading;
 
     private Dictionary<EUIPanelType, GameObject> _panels;
-
-    public enum EUIPanelType
-    {
-        Login,
-        Register,
-        BulletinBoard,
-        Post,
-        WritePost,
-        EditPost
-    }
 
     protected override void Awake()
     {
