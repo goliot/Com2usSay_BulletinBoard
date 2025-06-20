@@ -120,7 +120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7767856969654917372}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -1009183243681282361}
+        m_TargetAssemblyTypeName: UI_BulletinBoard, Assembly-CSharp
+        m_MethodName: OnSideButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2614472350926694021
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1724336278351239220}
   - component: {fileID: 8666658156562905322}
-  - component: {fileID: 9080374748766415125}
+  - component: {fileID: -1009183243681282361}
   m_Layer: 5
   m_Name: Panel_BulletinBoard
   m_TagString: Untagged
@@ -294,7 +306,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3127238740197651445}
   m_CullTransparentMesh: 1
---- !u!114 &9080374748766415125
+--- !u!114 &-1009183243681282361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -303,10 +315,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3127238740197651445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f31e46a9b5781574481158ae16e963e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9cb71da52b84a3d42874797790643425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  postItemPrefab: {fileID: 8054810919104593141, guid: 68c976a0735a59c4894e328b3a4b5ccd, type: 3}
+  _sidePanel: {fileID: 0}
+  _postItemPrefab: {fileID: 0}
+  _postListContainer: {fileID: 0}
 --- !u!1 &4067880489046812670
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +443,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2040880600581028248}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -1009183243681282361}
+        m_TargetAssemblyTypeName: UI_BulletinBoard, Assembly-CSharp
+        m_MethodName: OnOrderButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4164897333848081132
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +924,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4023976809677563797}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -1009183243681282361}
+        m_TargetAssemblyTypeName: UI_BulletinBoard, Assembly-CSharp
+        m_MethodName: OnWriteButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6855791550739519045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2916316807146613906, guid: e1e777ead17718b4fba358a7a86bb775, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 451.5
+      value: 249
       objectReference: {fileID: 0}
     - target: {fileID: 2916316807146613906, guid: e1e777ead17718b4fba358a7a86bb775, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1851,7 +1889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8138866926053711088, guid: e1e777ead17718b4fba358a7a86bb775, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -218.15
+      value: -349.035
       objectReference: {fileID: 0}
     - target: {fileID: 8362466162742656505, guid: e1e777ead17718b4fba358a7a86bb775, type: 3}
       propertyPath: m_AnchorMax.y
