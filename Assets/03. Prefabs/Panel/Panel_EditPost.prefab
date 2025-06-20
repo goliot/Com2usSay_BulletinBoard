@@ -188,8 +188,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
+  m_sharedMaterial: {fileID: 2198821237350938752, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1414,7 +1414,7 @@ GameObject:
   - component: {fileID: 1218068521050975197}
   - component: {fileID: 6418849446672690874}
   - component: {fileID: 8279401069683224150}
-  - component: {fileID: 1308743865938105249}
+  - component: {fileID: 5045084751791816658}
   m_Layer: 5
   m_Name: Panel_EditPost
   m_TagString: Untagged
@@ -1484,7 +1484,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1308743865938105249
+--- !u!114 &5045084751791816658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1493,14 +1493,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7066451839455839183}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52a6a81b72a0ac2449edb58fdd4fccc6, type: 3}
+  m_Script: {fileID: 11500000, guid: f7d12022128bfae4f8dc412e51a0c24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backButton: {fileID: 0}
-  _commitButton: {fileID: 0}
-  _scrollView: {fileID: 0}
-  _postContentInput: {fileID: 0}
-  _imageInsertButton: {fileID: 0}
+  _showDuration: 0.3
+  contentText: {fileID: 8489888393128290566}
 --- !u!1 &7847440396711959019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,7 +1756,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_KeepTextSelectionVisible: 0

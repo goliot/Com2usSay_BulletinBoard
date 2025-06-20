@@ -691,8 +691,7 @@ GameObject:
   - component: {fileID: 8183970500271759226}
   - component: {fileID: 6895625960189607792}
   - component: {fileID: 6365060377786372505}
-  - component: {fileID: 8001717465542290779}
-  - component: {fileID: 5866484283598415547}
+  - component: {fileID: 7734611628087763076}
   m_Layer: 5
   m_Name: Panel_WritePost
   m_TagString: Untagged
@@ -762,7 +761,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8001717465542290779
+--- !u!114 &7734611628087763076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -771,26 +770,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5865397452441951944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3546a0965f7049b488b06c9d3d9290f7, type: 3}
+  m_Script: {fileID: 11500000, guid: e952e4a65167418409d4c208cbc1a275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backButton: {fileID: 6990932084717020427}
-  _commitButton: {fileID: 7514637692212850826}
-  _scrollView: {fileID: 4267088758503121988}
-  _postContentInput: {fileID: 6378055192227379582}
-  _imageInsertButton: {fileID: 4953504873827571204}
---- !u!114 &5866484283598415547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865397452441951944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b0f9478b30113f4eb2d2a98867440bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _showDuration: 0.3
+  contentText: {fileID: 6378055192227379582}
 --- !u!1 &6072402886151853333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,8 +1053,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
+  m_sharedMaterial: {fileID: 2198821237350938752, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1690,7 +1674,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: dfaffe6f8fcdc7c47ba1395da5c3d170, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_KeepTextSelectionVisible: 0
