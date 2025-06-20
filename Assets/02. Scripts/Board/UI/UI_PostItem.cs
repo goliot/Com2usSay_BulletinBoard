@@ -75,7 +75,10 @@ public class UI_PostItem : MonoBehaviour
         //UIManager.Instance.ShowLoading(false);
         //OnChanged?.Invoke();
 
+
         _fullHeartImage.SetActive(await LikeManager.Instance.ToggleLike(_post));
+
+        Initialize(_post);
     }
 
     public void OnEditButtonClicked()
