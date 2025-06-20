@@ -12,17 +12,20 @@ public class LikeManager : Singleton<LikeManager>
         return likeData.ToDto();
     }
 
-    public async Task<bool> ToggleLike(PostDTO post)
+    public async Task<bool> ToggleLike(Post post)
     {
         var account = AccountManager.Instance.MyAccount;
+
+        // 서버에 토글 요청
         bool flag = await _repository.ToggleLike(post, account);
 
-        return flag;
+        // 최신 Like 정보를 다시 받아와서 동기화
+        var updatedLike = await _repository.GetLike(post.ToDto());
+        post.SetLike(updatedLike);  // 🔥 반드시 반영 필요!
 
-        // 서버에서 최신 Like 정보 받아와서 동기화
-        //var likeData = await _repository.GetLike(post);
-        //post.SetLike(likeData);
+        return flag;
     }
+
 
     public bool IsLikedByMe(Post post)
     {

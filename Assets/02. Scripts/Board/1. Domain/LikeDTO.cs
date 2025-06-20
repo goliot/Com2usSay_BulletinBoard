@@ -9,4 +9,9 @@ public class LikeDTO
     {
         LikedUserIds = new List<string>(like.LikedUserIdHash);
     }
+
+    public Like ToEntity()
+    {
+        return new Like(this);
+    }
 }

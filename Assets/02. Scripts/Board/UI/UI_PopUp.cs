@@ -23,7 +23,7 @@ public abstract class UI_PopUp : MonoBehaviour
         float width = _rect.rect.width;
         _offscreenPos = new Vector2(-width, _initialPos.y);
 
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         _rect.anchoredPosition = _initialPos;
     }
 

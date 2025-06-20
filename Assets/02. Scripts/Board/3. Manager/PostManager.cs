@@ -8,7 +8,7 @@ public class PostManager : Singleton<PostManager>
     private readonly PostRepository _postRepository = new PostRepository();
 
     private Post _currentPost;
-    public PostDTO CurrentPost;
+    public Post CurrentPost => _currentPost;
 
     public async Task<bool> CreatePost(string title, string content)
     {
@@ -91,7 +91,7 @@ public class PostManager : Singleton<PostManager>
         Debug.Log($"Post deleted: {postId}");
     }
 
-    public void SetCurrentPost(PostDTO post)
+    public void SetCurrentPost(Post post)
     {
         if (post == null)
         {
@@ -99,13 +99,13 @@ public class PostManager : Singleton<PostManager>
             return;
         }
 
-        CurrentPost = post;
+        _currentPost = post;
         Debug.Log($"CurrentPost 설정됨: {post.Title} (ID: {post.PostId})");
     }
 
     public async Task ToggleLikeOnCurrentPost()
     {
-        await LikeManager.Instance.ToggleLike(_currentPost.ToDto());
+        await LikeManager.Instance.ToggleLike(_currentPost);
     }
 
     public async Task<List<Post>> GetAllPosts()

@@ -18,6 +18,11 @@ public class Like
         LikedUserIds = likedUserIds ?? new List<string>();
     }
 
+    public Like(LikeDTO dto)
+    {
+        LikedUserIds = dto.LikedUserIds;
+    }
+
     public bool IsLikedBy(string userId)
     {
         return LikedUserIdHash.Contains(userId);

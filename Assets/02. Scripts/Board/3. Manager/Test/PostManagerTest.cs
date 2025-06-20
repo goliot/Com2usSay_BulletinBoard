@@ -30,7 +30,7 @@ public class PostManagerTest : MonoBehaviour
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회
@@ -42,7 +42,7 @@ public class PostManagerTest : MonoBehaviour
 
         // 2. 좋아요 누르기 (가정: 로그인된 계정의 닉네임이 "user123")
         Debug.Log($"얘가 토글할거임 {AccountManager.Instance.MyAccount.Email}");
-        await LikeManager.Instance.ToggleLike(newPostDTO); // ← 도메인 Post 전달
+        await LikeManager.Instance.ToggleLike(newPost); // ← 도메인 Post 전달
         Debug.Log("👍 좋아요 1회 토글 완료");
 
         // 4. 게시글 조회

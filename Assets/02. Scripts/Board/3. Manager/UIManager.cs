@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using static UnityEngine.Rendering.DebugUI;
 
 public enum EUIPanelType
 {
@@ -25,9 +24,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private UI_PopUp _postPanel;
     [SerializeField] private UI_PopUp _writePostPanel;
     [SerializeField] private UI_PopUp _editPostPanel;
-    [SerializeField] private UI_PopUp _loadingPanel;
-
-    [SerializeField] private GameObject _panel_Loading;
 
     private Dictionary<EUIPanelType, UI_PopUp> _panels;
 
@@ -46,16 +42,14 @@ public class UIManager : Singleton<UIManager>
         };
     }
 
-    public void OpenPostPanel(PostDTO post)
+    private void Start()
     {
-        if (_panels.TryGetValue(EUIPanelType.Post, out var panel) && panel != null)
-        {
-            var uiPost = panel.GetComponent<UI_Post>();
-            if (uiPost != null)
-            {
-                uiPost.SetPost(post);
-            }
-        }
+        OpenPanel(EUIPanelType.Login);
+    }
+
+    public void OpenPostPanel(Post post)
+    {
+        PostManager.Instance.SetCurrentPost(post);
 
         OpenPanel(EUIPanelType.Post);
     }
@@ -74,10 +68,10 @@ public class UIManager : Singleton<UIManager>
                 continue;
 
             if (pair.Key == panelType) pair.Value.Show();
-            else if (pair.Value.gameObject.activeSelf) pair.Value.Hide();
+            else pair.Value.Hide();
         }
-        
-        bool isLogin = _loginPanel != null && _loginPanel.gameObject.activeSelf;
+
+        bool isLogin = _registerPanel.gameObject.activeSelf && _loginPanel.gameObject.activeSelf;
 
         _warningMessageText?.gameObject.SetActive(isLogin);
     }
