@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using static UnityEngine.Rendering.DebugUI;
 
 public enum EUIPanelType
 {
@@ -50,6 +51,8 @@ public class UIManager : Singleton<UIManager>
         ShowError(string.Empty);
         foreach (var pair in _panels)
         {
+            if (pair.Value == null)
+                continue;
             pair.Value.SetActive(pair.Key == panelType);
         }
 
@@ -64,6 +67,8 @@ public class UIManager : Singleton<UIManager>
         ShowError(string.Empty);
         foreach (var panel in _panels.Values)
         {
+            if (panel == null)
+                continue;
             panel.SetActive(false);
         }
     }
@@ -76,6 +81,6 @@ public class UIManager : Singleton<UIManager>
     public void ShowLoading(bool flag)
     {
         ShowError(string.Empty);
-        _panel_Loading.SetActive(flag);
+        //_panel_Loading.SetActive(flag);
     }
 }

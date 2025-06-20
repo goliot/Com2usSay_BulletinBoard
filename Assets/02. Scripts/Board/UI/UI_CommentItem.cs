@@ -13,7 +13,7 @@ public class UI_CommentItem : MonoBehaviour
     public void SetComment(CommentDTO comment)
     {
         AuthorIdText.text = comment.AuthorId;
-        CreatedAtText.text = comment.CreatedAt.ToString();
+        CreatedAtText.text = comment.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt h:mm", new System.Globalization.CultureInfo("ko-KR"));
         ContentText.text = comment.Content;
 
         _currentComment = comment;

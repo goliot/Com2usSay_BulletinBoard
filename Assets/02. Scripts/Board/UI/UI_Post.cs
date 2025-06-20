@@ -23,6 +23,15 @@ public class UI_Post : MonoBehaviour
 
     private List<UI_CommentItem> _commentItems = new List<UI_CommentItem>();
 
+    private void OnEnable()
+    {
+        if(_currentPost == null)
+        {
+            Post post = new Post("1", TitleText.text, ContentText.text, AuthorIdText.text);
+            _currentPost = post.ToDto();
+        }
+    }
+
     public async void OnClickLikeButton()
     {
         await LikeManager.Instance.ToggleLike(_currentPost);
@@ -42,7 +51,7 @@ public class UI_Post : MonoBehaviour
         _currentPost = post;
         TitleText.text = post.Title;
         AuthorIdText.text = post.AuthorId;
-        CreatedAtText.text = post.CreatedAt.ToString();
+        CreatedAtText.text = post.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt h:mm", new System.Globalization.CultureInfo("ko-KR"));
         ContentText.text = post.Content;
         LikeCountText.text = post.LikeCount.ToString();
 

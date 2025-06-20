@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CommentRepository
 {
-    private FirebaseFirestore _db = FirebaseInitialize.DB;
+    private FirebaseFirestore _db => FirebaseInitialize.DB;
 
     public async Task AddComment(Post post, CommentDTO comment)
     {

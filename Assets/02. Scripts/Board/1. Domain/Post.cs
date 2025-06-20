@@ -28,14 +28,14 @@ public class Post
         AuthorId = dto.AuthorId;
         Title = dto.Title;
         Content = dto.Content;
-        CreatedAt = Timestamp.FromDateTime(dto.CreatedAt);
+        CreatedAt = dto.CreatedAt;
 
-        // CommentList´Â nullÀÌ ¾Æ´ÑÁö È®ÀÎÇÏ°í º¹»ç
+        // CommentListëŠ” nullì´ ì•„ë‹Œì§€ í™•ì¸í•˜ê³  ë³µì‚¬
         CommentList = dto.CommentList != null
             ? new List<Comment>(dto.CommentList)
             : new List<Comment>();
 
-        // Like °´Ã¼ »ı¼º (DTO¿¡¼­ likedUserIds¸¸ °¡Á®¿Â´Ù°í °¡Á¤)
+        // Like ê°ì²´ ìƒì„± (DTOì—ì„œ likedUserIdsë§Œ ê°€ì ¸ì˜¨ë‹¤ê³  ê°€ì •)
         Like = dto.Like != null
             ? new Like(new List<string>(dto.Like.LikedUserIds))
             : new Like(new List<string>());
@@ -46,19 +46,19 @@ public class Post
     {
         if (string.IsNullOrEmpty(postId))
         {
-            throw new Exception("¹®¼­ ID°¡ ºñ¾ú½À´Ï´Ù.");
+            throw new Exception("ë¬¸ì„œ IDê°€ ë¹„ì—ˆìŠµë‹ˆë‹¤.");
         }
         if (string.IsNullOrEmpty(title))
         {
-            throw new Exception("Á¦¸ñÀÌ ºñ¾ú½À´Ï´Ù.");
+            throw new Exception("ì œëª©ì´ ë¹„ì—ˆìŠµë‹ˆë‹¤.");
         }
         if (string.IsNullOrEmpty(content))
         {
-            throw new Exception("³»¿ëÀÌ ºñ¾ú½À´Ï´Ù.");
+            throw new Exception("ë‚´ìš©ì´ ë¹„ì—ˆìŠµë‹ˆë‹¤.");
         }
         if (string.IsNullOrEmpty(authorId))
         {
-            throw new Exception("ÀÛ¼ºÀÚ Id°¡ ºñ¾ú½À´Ï´Ù.");
+            throw new Exception("ì‘ì„±ì Idê°€ ë¹„ì—ˆìŠµë‹ˆë‹¤.");
         }
         PostId = postId;
         AuthorId = authorId;

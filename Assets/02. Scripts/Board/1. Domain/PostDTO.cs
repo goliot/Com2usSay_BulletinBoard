@@ -1,3 +1,4 @@
+using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ public class PostDTO
     public readonly string AuthorId;
     public readonly string Title;
     public readonly string Content;
-    public readonly DateTime CreatedAt;
+    public readonly Timestamp CreatedAt;
     public readonly List<Comment> CommentList;
     public int CommentCount => CommentList.Count;
     public readonly Like Like;
@@ -19,7 +20,7 @@ public class PostDTO
         AuthorId = post.AuthorId;
         Title = post.Title;
         Content = post.Content;
-        CreatedAt = post.CreatedAt.ToDateTime();
+        CreatedAt = post.CreatedAt;
         CommentList = post.CommentList;
         Like = post.Like;
     }

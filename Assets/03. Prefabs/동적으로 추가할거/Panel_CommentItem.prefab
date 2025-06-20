@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9087235469363778412}
   - component: {fileID: 2236935867692287383}
   - component: {fileID: 7081251629322422276}
-  - component: {fileID: 7070305863141891155}
+  - component: {fileID: 3252408161996407489}
   m_Layer: 5
   m_Name: Panel_CommentItem
   m_TagString: Untagged
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7070305863141891155
+--- !u!114 &3252408161996407489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,9 +100,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 317874819392328511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 398be9834cd0e7147b44c36507a77b69, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b331de1225297942a0ab2072e6bb4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AuthorIdText: {fileID: 959112002057978132}
+  CreatedAtText: {fileID: 2611524449520461776}
+  ContentText: {fileID: 5828786941307132382}
 --- !u!1 &861879901567724935
 GameObject:
   m_ObjectHideFlags: 0
