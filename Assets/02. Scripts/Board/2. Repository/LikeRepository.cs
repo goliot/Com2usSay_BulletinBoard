@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public class LikeRepository
 {
-    private FirebaseFirestore _db = FirebaseInitialize.DB;
+    private FirebaseFirestore _db => FirebaseInitialize.DB;
 
     public async Task<Like> GetLike(PostDTO post)
     {

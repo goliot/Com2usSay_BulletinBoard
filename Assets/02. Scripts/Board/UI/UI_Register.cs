@@ -57,6 +57,7 @@ public class UI_Register : MonoBehaviour
         AccountResult result = await AccountManager.Instance.RegisterAsync(email, nickname, password);
         if (result.Success)
         {
+            Debug.Log($"회원가입 성공");
             UIManager.Instance.OpenPanel(EUIPanelType.Login);
         }
         else

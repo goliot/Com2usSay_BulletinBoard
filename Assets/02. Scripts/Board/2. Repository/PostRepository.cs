@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PostRepository
 {
-    private FirebaseFirestore _db = FirebaseInitialize.DB;
+    private FirebaseFirestore _db => FirebaseInitialize.DB;
 
     public async Task AddPost(PostDTO post)
     {
