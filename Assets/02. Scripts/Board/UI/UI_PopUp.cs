@@ -6,13 +6,25 @@ using UnityEngine;
 /// </summary>
 public abstract class UI_PopUp : MonoBehaviour
 {
-    [SerializeField] protected float _showDuration = 0.3f;
-    [SerializeField] protected float _hideDuration = 0.2f;
+    [Header("Tween 애니메이션 시간")]
+    [SerializeField] 
+    protected float _showDuration = 0.3f;
+    protected float _hideDuration = 0.2f;
+
+    private RectTransform _rect;
+    private Vector2 _initialPos;
+    private Vector2 _offscreenPos;
 
     protected virtual void Awake()
     {
+        _rect = GetComponent<RectTransform>();
+        _initialPos = _rect.anchoredPosition;
+
+        float width = _rect.rect.width;
+        _offscreenPos = new Vector2(-width, _initialPos.y);
+
         gameObject.SetActive(false);
-        transform.localScale = Vector3.zero;
+        _rect.anchoredPosition = _initialPos;
     }
 
     /// <summary>
@@ -21,8 +33,8 @@ public abstract class UI_PopUp : MonoBehaviour
     public virtual void Show()
     {
         gameObject.SetActive(true);
-        transform.localScale = Vector3.zero;
-        transform.DOScale(Vector3.one, _showDuration).SetEase(Ease.OutBack);
+        _rect.anchoredPosition = _offscreenPos;
+        _rect.DOAnchorPos(_initialPos, _showDuration).SetEase(Ease.OutCubic);
     }
 
     /// <summary>
@@ -30,8 +42,8 @@ public abstract class UI_PopUp : MonoBehaviour
     /// </summary>
     public virtual void Hide()
     {
-        transform.DOScale(Vector3.zero, _hideDuration)
-                 .SetEase(Ease.InBack)
-                 .OnComplete(() => gameObject.SetActive(false));
+        _rect.DOAnchorPos(_offscreenPos, _hideDuration)
+             .SetEase(Ease.InCubic)
+             .OnComplete(() => gameObject.SetActive(false));
     }
 }

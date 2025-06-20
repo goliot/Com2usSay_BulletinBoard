@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class UI_BulletinBoard : MonoBehaviour
+public class UI_BulletinBoard : UI_PopUp
 {
     [SerializeField] private GameObject _sidePanel;
     [SerializeField] private GameObject _postItemPrefab;
     [SerializeField] private Transform _postListContainer;
+
+    public override void Show() { base.Show(); }
+    public override void Hide() { base.Hide(); }
 
     private void OnEnable()
     {

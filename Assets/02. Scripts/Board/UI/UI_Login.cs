@@ -6,6 +6,9 @@ public class UI_Login : UI_PopUp
     [SerializeField] private TMP_InputField _emailInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
 
+    public override void Show() { base.Show(); }
+    public override void Hide() { base.Hide(); }
+
     public void OnClickGoToRegister()
     {
         UIManager.Instance.OpenPanel(EUIPanelType.Register);

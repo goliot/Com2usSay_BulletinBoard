@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-public class UI_Register : MonoBehaviour
+public class UI_Register : UI_PopUp
 {
     [SerializeField] private TMP_InputField _emailInputField;
     [SerializeField] private TMP_InputField _nicknameInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
     [SerializeField] private TMP_InputField _passwordCheckInputField;
+
+    public override void Show() { base.Show(); }
+    public override void Hide() { base.Hide(); }
 
     public void OnClickRegisterPanelExit()
     {

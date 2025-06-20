@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Post : MonoBehaviour
+public class UI_Post : UI_PopUp
 {
     private PostDTO _currentPost;
     public PostDTO CurrentPost => _currentPost;
@@ -39,6 +39,9 @@ public class UI_Post : MonoBehaviour
         //InitComments();
         //InitLike();
     }
+
+    public override void Show() { base.Show(); }
+    public override void Hide() { base.Hide(); }
 
     private async void InitComments()
     {

@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
 
-public class UI_EditPost : MonoBehaviour
+public class UI_EditPost : UI_PopUp
 {
     [SerializeField] private TMP_InputField contentText;
+
+    public override void Show() { base.Show(); }
+    public override void Hide() { base.Hide(); }
 
     public async void OnCommitButtonClicked()
     {
