@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 
-public class UIManger : Singleton<UIManger>
+public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private TextMeshProUGUI _warningMessageText;
     [SerializeField] private GameObject _panel_Login;          // 로그인
