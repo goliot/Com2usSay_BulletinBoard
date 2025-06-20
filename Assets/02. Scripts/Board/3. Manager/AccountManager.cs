@@ -58,4 +58,13 @@ public class AccountManager : Singleton<AccountManager>
         }
         return success;
     }
+
+    public async Task<string> GetUserNicknameWithEmail(string email)
+    {
+        string nickname = string.Empty;
+
+        nickname = await _repository.GetNicknameByEmailAsync(email);
+
+        return nickname; // 없으면 null 반환
+    }
 }

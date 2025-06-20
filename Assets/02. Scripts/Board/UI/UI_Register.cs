@@ -46,7 +46,14 @@ public class UI_Register : MonoBehaviour
             return;
         }
 
-        Account account = new Account(email, nickname);
+        string message;
+        Account account;
+        if(!Account.TryCreate(email, nickname, out account, out message))
+        {
+            UIManager.Instance.ShowError(message);
+            return;
+        }
+        
         AccountResult result = await AccountManager.Instance.RegisterAsync(email, nickname, password);
         if (result.Success)
         {

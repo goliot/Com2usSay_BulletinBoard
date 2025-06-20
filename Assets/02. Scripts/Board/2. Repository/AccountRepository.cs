@@ -48,7 +48,11 @@ public class AccountRepository
 
             // 닉네임 컬렉션에 닉네임 등록 (중복 방지용)
             var docRef = _db.Collection("Nicknames").Document(nickname);
-            await docRef.SetAsync(new { UserId = result.User.UserId });
+            await docRef.SetAsync(new
+            {
+                UserId = result.User.UserId,
+                Email = result.User.Email
+            });
 
             Debug.Log($"회원가입 성공 : {result.User.UserId}");
             return new AccountResult(true, null);
@@ -59,7 +63,6 @@ public class AccountRepository
             return new AccountResult(false, ex.Message);
         }
     }
-
 
     /// <summary>
     /// 회원가입 시 최초 1회 서버의 DisplayName변경용
@@ -164,11 +167,27 @@ public class AccountRepository
     {
         if (user != null)
         {
-            _myAccount = new Account(user.Email, user.DisplayName);
+            Account.TryCreate(user.Email, user.DisplayName, out _myAccount, out string message);
         }
         else
         {
             _myAccount = null;
         }
+    }
+
+    public async Task<string> GetNicknameByEmailAsync(string email)
+    {
+        await FirebaseInitialize.WaitForInitializationAsync();
+
+        var nicknameCollection = _db.Collection("Nicknames");
+        var query = nicknameCollection.WhereEqualTo("Email", email);
+        var querySnapshot = await query.GetSnapshotAsync();
+
+        foreach (var doc in querySnapshot.Documents)
+        {
+            return doc.Id; // 문서 ID가 닉네임
+        }
+
+        return null; // 해당 이메일로 등록된 닉네임 없음
     }
 }

@@ -1,36 +1,39 @@
 using Firebase.Firestore;
-using System;
 
-[FirestoreData]
 public class Account
 {
     private readonly string _email;
     [FirestoreProperty] public string Email => _email;
 
-    //private readonly string _password;
-    //[FirestoreProperty] public string Password => _password;
-
     [FirestoreProperty] public string Nickname { get; private set; }
 
-    public Account(string email, string nickname)
+    private Account(string email, string nickname)
     {
-        // 이메일 검증
+        _email = email;
+        Nickname = nickname;
+    }
+
+    public static bool TryCreate(string email, string nickname, out Account account, out string errorMessage)
+    {
         var emailSpecification = new AccountEmailSpecification();
         if (!emailSpecification.IsSatisfiedBy(email))
         {
-            throw new Exception(emailSpecification.ErrorMessage);
+            account = null;
+            errorMessage = emailSpecification.ErrorMessage;
+            return false;
         }
 
-        // 닉네임 검증
         var nicknameSpecification = new AccountNicknameSpecification();
         if (!nicknameSpecification.IsSatisfiedBy(nickname))
         {
-            throw new Exception(nicknameSpecification.ErrorMessage);
+            account = null;
+            errorMessage = nicknameSpecification.ErrorMessage;
+            return false;
         }
 
-        _email = email;
-        Nickname = nickname;
-        //_password = password;
+        account = new Account(email, nickname);
+        errorMessage = null;
+        return true;
     }
 
     public AccountDTO ToDto()
