@@ -1,15 +1,17 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 public class UIManger : Singleton<UIManger>
 {
-    [SerializeField] GameObject Panel_Login;          // 로그인
-    [SerializeField] GameObject Panel_Register;       // 회원가입
-    [SerializeField] GameObject Panel_BulletinBoard;  // 전체 글 목록
-    [SerializeField] GameObject Panel_Post;           // 글 상세 보기
-    [SerializeField] GameObject Panel_WritePost;      // 글 쓰기
-    [SerializeField] GameObject Panel_EditPost;       // 글 수정
+    [SerializeField] private TextMeshProUGUI _warningMessageText;
+    [SerializeField] private GameObject _panel_Login;          // 로그인
+    [SerializeField] private GameObject _panel_Register;       // 회원가입
+    [SerializeField] private GameObject _panel_BulletinBoard;  // 전체 글 목록
+    [SerializeField] private GameObject _panel_Post;           // 글 상세 보기
+    [SerializeField] private GameObject _panel_WritePost;      // 글 쓰기
+    [SerializeField] private GameObject _panel_EditPost;       // 글 수정
 
     private Dictionary<EUIPanelType, GameObject> _panels;
 
@@ -29,12 +31,12 @@ public class UIManger : Singleton<UIManger>
 
         _panels = new Dictionary<EUIPanelType, GameObject>
         {
-            { EUIPanelType.Login, Panel_Login },
-            { EUIPanelType.Register, Panel_Register },
-            { EUIPanelType.BulletinBoard, Panel_BulletinBoard },
-            { EUIPanelType.Post, Panel_Post },
-            { EUIPanelType.WritePost, Panel_WritePost },
-            { EUIPanelType.EditPost, Panel_EditPost }
+            { EUIPanelType.Login, _panel_Login },
+            { EUIPanelType.Register, _panel_Register },
+            { EUIPanelType.BulletinBoard, _panel_BulletinBoard },
+            { EUIPanelType.Post, _panel_Post },
+            { EUIPanelType.WritePost, _panel_WritePost },
+            { EUIPanelType.EditPost, _panel_EditPost }
         };
     }
 
@@ -59,5 +61,10 @@ public class UIManger : Singleton<UIManger>
         {
             panel.SetActive(false);
         }
+    }
+
+    public void SetWarningMessage(string message)
+    {
+        _warningMessageText.text = message;
     }
 }
