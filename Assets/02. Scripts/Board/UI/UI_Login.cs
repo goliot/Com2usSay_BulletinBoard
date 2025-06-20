@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UI_Login : MonoBehaviour
+public class UI_Login : UI_PopUp
 {
     [SerializeField] private TMP_InputField _emailInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
