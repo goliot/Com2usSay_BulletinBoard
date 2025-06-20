@@ -6,16 +6,18 @@ public class UI_Login : MonoBehaviour
     {
         UIManager.Instance.ShowLoading(true);
 
-        bool success = await AccountManager.Instance.LoginAsync(email, password, errorMessage =>
-        {
-            UIManager.Instance.ShowError(errorMessage); // 실패 시 에러 메시지 출력
-        });
+        AccountResult result = await AccountManager.Instance.LoginAsync(email, password);
 
         UIManager.Instance.ShowLoading(false);
 
-        if (success)
+        if (result.Success)
         {
             UIManager.Instance.OpenPanel(EUIPanelType.BulletinBoard); // 성공 시 메인 UI로 전환
+        }
+        else
+        {
+            UIManager.Instance.ShowError(result.ErrorMessage);
+            UIManager.Instance.OpenPanel(EUIPanelType.Login);
         }
         // 실패 시는 onFail 콜백에서 처리되므로 else 생략 가능
     }
