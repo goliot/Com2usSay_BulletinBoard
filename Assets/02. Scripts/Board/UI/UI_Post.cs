@@ -21,20 +21,53 @@ public class UI_Post : MonoBehaviour
     [Header("# New Comment")]
     [SerializeField] private TMP_InputField CommentInputField; // 작성하는곳
 
+    [Header("# Like")]
+    [SerializeField] private GameObject _fullHeartImage;
+
     private List<UI_CommentItem> _commentItems = new List<UI_CommentItem>();
 
     private void OnEnable()
     {
         if(_currentPost == null)
         {
-            Post post = new Post("1", TitleText.text, ContentText.text, AuthorIdText.text);
-            _currentPost = post.ToDto();
+            //Post post = new Post("1", TitleText.text, ContentText.text, AuthorIdText.text);
+            //_currentPost = post.ToDto();
+
+            return;
         }
+        //SetPost(_currentPost);
+        //InitComments();
+        //InitLike();
+    }
+
+    private async void InitComments()
+    {
+        RefreshComments();
+        List<CommentDTO> comments = await CommentManager.Instance.GetComments(_currentPost);
+        foreach(var comment in comments)
+        {
+            AddCommentItemUI(comment);
+        }
+    }
+
+    private void InitLike()
+    {
+        bool flag = LikeManager.Instance.IsLikedByMe(_currentPost.ToEntity());
+        _fullHeartImage.SetActive(flag);
+    }
+
+    public void OnClickToBoardButton()
+    {
+        UIManager.Instance.OpenPanel(EUIPanelType.BulletinBoard);
     }
 
     public async void OnClickLikeButton()
     {
-        await LikeManager.Instance.ToggleLike(_currentPost);
+        bool flag = await LikeManager.Instance.ToggleLike(_currentPost);
+
+        _fullHeartImage.SetActive(flag);
+
+        LikeCountText.text = _currentPost.LikeCount.ToString();
     }
 
     public async void OnClickAddCommentButton()
@@ -43,7 +76,7 @@ public class UI_Post : MonoBehaviour
         await CommentManager.Instance.AddComment(_currentPost.ToEntity(), comment.ToDto());
         CommentInputField.text = string.Empty;
 
-        AddComment(comment.ToDto());
+        AddCommentItemUI(comment.ToDto());
     }
 
     public void SetPost(PostDTO post)
@@ -51,11 +84,12 @@ public class UI_Post : MonoBehaviour
         _currentPost = post;
         TitleText.text = post.Title;
         AuthorIdText.text = post.AuthorId;
-        CreatedAtText.text = post.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt h:mm", new System.Globalization.CultureInfo("ko-KR"));
+        CreatedAtText.text = post.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt HH:mm", new System.Globalization.CultureInfo("ko-KR"));
         ContentText.text = post.Content;
         LikeCountText.text = post.LikeCount.ToString();
-
-        ShowComments();
+        InitComments();
+        InitLike();
+        //ShowComments();
     }
 
     private void ShowComments()
@@ -70,7 +104,7 @@ public class UI_Post : MonoBehaviour
         }
     }
 
-    private void AddComment(CommentDTO comment)
+    private void AddCommentItemUI(CommentDTO comment)
     {
         UI_CommentItem item = Instantiate(UI_CommentItem, CommentParent).GetComponent<UI_CommentItem>();
         item.SetComment(comment);
@@ -92,4 +126,12 @@ public class UI_Post : MonoBehaviour
         }
     }
 
+    private void RefreshComments()
+    {
+        foreach(var item in _commentItems)
+        {
+            Destroy(item.gameObject);
+        }
+        _commentItems.Clear();
+    }
 }

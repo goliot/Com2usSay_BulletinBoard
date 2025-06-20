@@ -43,6 +43,21 @@ public class UIManager : Singleton<UIManager>
         };
     }
 
+    public void OpenPostPanel(PostDTO post)
+    {
+        if (_panels.TryGetValue(EUIPanelType.Post, out var panel) && panel != null)
+        {
+            var uiPost = panel.GetComponent<UI_Post>();
+            if (uiPost != null)
+            {
+                uiPost.SetPost(post);
+            }
+        }
+
+        OpenPanel(EUIPanelType.Post);
+    }
+
+
     /// <summary>
     /// 지정한 패널만 열고 나머지는 닫습니다.
     /// </summary>

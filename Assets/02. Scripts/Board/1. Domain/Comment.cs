@@ -9,13 +9,20 @@ public class Comment
     [FirestoreProperty] public string Content { get; set; }
     [FirestoreProperty] public Timestamp CreatedAt { get; set; }
 
-    // ±âº» »ı¼ºÀÚ ÇÊ¿ä (Firestore¿ë)
+    // ê¸°ë³¸ ìƒì„±ì í•„ìš” (Firestoreìš©)
     public Comment() { }
 
     public Comment(string authorId, string content)
     {
-        if (string.IsNullOrEmpty(authorId)) throw new Exception("ÀÛ¼ºÀÚ Id°¡ ºñ¾ú½À´Ï´Ù.");
-        if (string.IsNullOrEmpty(content)) throw new Exception("³»¿ëÀÌ ºñ¾ú½À´Ï´Ù.");
+        CommentSpecification spec = new CommentSpecification();
+        if (!spec.IsSatisfiedBy(authorId))
+        {
+            throw new Exception($"{nameof(authorId)} {spec.ErrorMessage}");
+        }
+        if (!spec.IsSatisfiedBy(content))
+        {
+            throw new Exception($"{nameof(content)} {spec.ErrorMessage}");
+        }
 
         AuthorId = authorId;
         Content = content;

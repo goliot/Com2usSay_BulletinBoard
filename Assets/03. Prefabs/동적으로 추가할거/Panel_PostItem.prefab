@@ -179,8 +179,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -349.035}
-  m_SizeDelta: {x: 900, y: 0}
+  m_AnchoredPosition: {x: 450, y: -319.385}
+  m_SizeDelta: {x: 850, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2603111939011871523
 CanvasRenderer:
@@ -278,7 +278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2487782568299026371
 RectTransform:
   m_ObjectHideFlags: 0
@@ -296,9 +296,9 @@ RectTransform:
   - {fileID: 3142769291762579932}
   m_Father: {fileID: 8138866926053711088}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -367.42}
   m_SizeDelta: {x: 900, y: 59.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &978487312363637925
@@ -624,9 +624,9 @@ RectTransform:
   - {fileID: 1542928883001623072}
   m_Father: {fileID: 2487782568299026371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 683.5, y: -29.65}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1965420881275002334
@@ -769,9 +769,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8362466162742656505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 162.235, y: -25}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7590945921298795877
@@ -848,9 +848,9 @@ RectTransform:
   - {fileID: 3231417662523674716}
   m_Father: {fileID: 2487782568299026371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 216.5, y: -29.65}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &602257163507973622
@@ -996,7 +996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -128.725}
+  m_AnchoredPosition: {x: 425, y: -128.725}
   m_SizeDelta: {x: 820, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7363663873444439834
@@ -1235,7 +1235,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3281402968110969179}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnDeleteButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3447185707868776407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,9 +1280,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2487782568299026371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 450, y: -29.65}
   m_SizeDelta: {x: 1, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8252269748842004066
@@ -1887,7 +1899,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -309.61002}
+  m_AnchoredPosition: {x: 425, y: -309.61002}
   m_SizeDelta: {x: 820, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7402868800848690534
@@ -2091,7 +2103,7 @@ GameObject:
   - component: {fileID: 8096961894356590835}
   - component: {fileID: 3626495684971376359}
   - component: {fileID: 2256674133715399341}
-  - component: {fileID: 2910514852423747852}
+  - component: {fileID: 5507512041932983772}
   m_Layer: 5
   m_Name: Panel_PostItem
   m_TagString: Untagged
@@ -2198,7 +2210,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2910514852423747852
+--- !u!114 &5507512041932983772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2207,9 +2219,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5316272059141174413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b13cd99f71add1b42be39187d892c94a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9fff42cf7a552b8468943044f8e0d4c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _autherName: {fileID: 6402534054669078968}
+  _timeInfo: {fileID: 6201318344337454890}
+  _content: {fileID: 9190910011640909363}
+  _likeAndComment: {fileID: 391838315569791538}
+  _editOpenPanel: {fileID: 7805037054454571917}
 --- !u!1 &6548365076237912920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,9 +2395,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3142769291762579932}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 151.315, y: -25}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7177721008786811941
@@ -2529,7 +2546,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 220, y: -25}
-  m_SizeDelta: {x: 65.53, y: 0}
+  m_SizeDelta: {x: 65.53, y: 26.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &920789816299638042
 CanvasRenderer:
@@ -2796,11 +2813,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6039387326186969662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: -75}
-  m_SizeDelta: {x: 750, y: 150}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 6.4438, y: -246.0736}
+  m_SizeDelta: {x: 787.11, y: 400.8021}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6501256885611544428
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2882,7 +2899,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8341508950278844719}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnItemClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8315187517187255766
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,7 +3228,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1840311021822851354}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnEditOpenPanelClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8923773159013686094
 GameObject:
   m_ObjectHideFlags: 0
@@ -3320,4 +3361,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9104220984171404444}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5507512041932983772}
+        m_TargetAssemblyTypeName: UI_PostItem, Assembly-CSharp
+        m_MethodName: OnEditOpenPanelClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

@@ -44,21 +44,22 @@ public class Post
 
     public Post(string postId, string title, string content, string authorId)
     {
-        if (string.IsNullOrEmpty(postId))
+        PostSpecification spec = new PostSpecification();
+        if (!spec.IsSatisfiedBy(postId))
         {
-            throw new Exception("문서 ID가 비었습니다.");
+            throw new Exception($"{nameof(postId)} {spec.ErrorMessage}");
         }
-        if (string.IsNullOrEmpty(title))
+        if (!spec.IsSatisfiedBy(title))
         {
-            throw new Exception("제목이 비었습니다.");
+            throw new Exception($"{nameof(title)} {spec.ErrorMessage}");
         }
-        if (string.IsNullOrEmpty(content))
+        if (!spec.IsSatisfiedBy(content))
         {
-            throw new Exception("내용이 비었습니다.");
+            throw new Exception($"{nameof(content)} {spec.ErrorMessage}");
         }
-        if (string.IsNullOrEmpty(authorId))
+        if (!spec.IsSatisfiedBy(authorId))
         {
-            throw new Exception("작성자 Id가 비었습니다.");
+            throw new Exception($"{nameof(authorId)} {spec.ErrorMessage}");
         }
         PostId = postId;
         AuthorId = authorId;

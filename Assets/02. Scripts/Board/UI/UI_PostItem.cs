@@ -45,8 +45,15 @@ public class UI_PostItem : MonoBehaviour
 
     public void OnItemClicked()
     {
-        UIManager.Instance.OpenPanel(EUIPanelType.Post);
+        if (_post == null)
+        {
+            Debug.LogWarning("Post 정보가 없습니다.");
+            return;
+        }
+
+        UIManager.Instance.OpenPostPanel(_post.ToDto());
     }
+
 
     public async void OnDeleteButtonClicked()
     {

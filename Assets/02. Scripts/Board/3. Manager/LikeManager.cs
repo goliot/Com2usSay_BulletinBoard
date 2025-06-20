@@ -12,12 +12,14 @@ public class LikeManager : Singleton<LikeManager>
         return likeData.ToDto();
     }
 
-    public async Task ToggleLike(PostDTO post)
+    public async Task<bool> ToggleLike(PostDTO post)
     {
         var account = AccountManager.Instance.MyAccount;
-        await _repository.ToggleLike(post, account);
+        bool flag = await _repository.ToggleLike(post, account);
 
-        // ¼­¹ö¿¡¼­ ÃÖ½Å Like Á¤º¸ ¹Ş¾Æ¿Í¼­ µ¿±âÈ­
+        return flag;
+
+        // ì„œë²„ì—ì„œ ìµœì‹  Like ì •ë³´ ë°›ì•„ì™€ì„œ ë™ê¸°í™”
         //var likeData = await _repository.GetLike(post);
         //post.SetLike(likeData);
     }

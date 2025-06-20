@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UI_EditPost : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI contentText;
+    [SerializeField] private TMP_InputField contentText;
 
     public async void OnCommitButtonClicked()
     {

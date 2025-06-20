@@ -9,12 +9,22 @@ public class CommentRepository
 {
     private FirebaseFirestore _db => FirebaseInitialize.DB;
 
-    public async Task AddComment(Post post, CommentDTO comment)
+    public async Task AddComment(Post post, CommentDTO commentDto)
     {
         var commentsRef = _db.Collection("Posts").Document(post.PostId).Collection("Comments");
+
+        // 문서 레퍼런스 먼저 만들고 ID 확보
         var newCommentRef = commentsRef.Document();
-        await newCommentRef.SetAsync(comment.ToEntity());
-        post.AddComment(comment);
+        string generatedId = newCommentRef.Id;
+
+        // Comment 엔티티에 ID 할당
+        var comment = commentDto.ToEntity();
+        comment.CommentId = generatedId;
+
+        await newCommentRef.SetAsync(comment);
+
+        // Post 객체에도 추가
+        post.AddComment(comment.ToDto());
     }
 
     public async Task<List<CommentDTO>> GetComments(PostDTO post)
