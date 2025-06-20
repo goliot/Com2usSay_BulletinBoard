@@ -110,14 +110,8 @@ public class PostManager : Singleton<PostManager>
 
     public async Task<List<Post>> GetAllPosts()
     {
-        int start = 0;
-        int limit = 1000; // 
-        List<PostDTO> postDTOs = await _postRepository.GetPosts(start, limit);
-        List<Post> posts = new List<Post>();
-        foreach (var postDTO in postDTOs)
-        {
-            posts.Add(postDTO.ToEntity());
-        }
+        List<Post> posts = await _postRepository.GetPosts();
+
         return posts;
     }
 }

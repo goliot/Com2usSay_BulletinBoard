@@ -1379,7 +1379,7 @@ PrefabInstance:
     - target: {fileID: 5627968701318107890, guid: bef474637ed1443469e7205103dfaf40, type: 3}
       propertyPath: _postPanel
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 285286438}
     - target: {fileID: 5627968701318107890, guid: bef474637ed1443469e7205103dfaf40, type: 3}
       propertyPath: _loginPanel
       value: 

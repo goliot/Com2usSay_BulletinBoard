@@ -65,8 +65,8 @@ public class PostManagerTest : MonoBehaviour
         }
 
         // 7. 전체 게시글 목록
-        List<PostDTO> postList = await _repository.GetPosts(0, 10);
-        Debug.Log($"📃 전체 게시글 수: {postList.Count}");
+        //List<PostDTO> postList = await _repository.GetPosts();
+        //Debug.Log($"📃 전체 게시글 수: {postList.Count}");
 
         await TestAddAndFetchComments(newPost);
 
