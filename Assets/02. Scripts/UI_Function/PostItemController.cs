@@ -32,12 +32,12 @@ public class PostItemController : MonoBehaviour
     /// <summary>
     /// 전달된 데이터를 텍스트에 바인딩하고, 버튼 리스너를 연결합니다.
     /// </summary>
-    public void Setup(PostData data)
+    public void Setup(PostDTO data)
     {
         InitIfNeeded();
 
-        _authorNameText.text = data.AuthorName;
-        _timeInfoText.text = data.TimeInfo;
+        _authorNameText.text = data.AuthorId;
+        _timeInfoText.text = data.CreatedAt.ToString();
         _contentText.text = data.Content;
         _likeCommentCountText.text = $"{data.LikeCount}♥  {data.CommentCount}💬";
 

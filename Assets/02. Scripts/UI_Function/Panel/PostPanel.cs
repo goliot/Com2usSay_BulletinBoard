@@ -70,21 +70,13 @@ public class PostPanel : BasePanel
     private void LoadAndDisplayPost(string postId)
     {
         // TODO: postId로 실제 데이터 로드
-        var data = new PostData
-        {
-            PostId = postId,
-            AuthorName = "작성자 이름",
-            TimeInfo = "방금 전",
-            Content = "본문 내용 예시",
-            LikeCount = 0,
-            CommentCount = 0
-        };
 
-        // 본문 바인딩
-        authorNameText.text = data.AuthorName;
-        timeInfoText.text = data.TimeInfo;
-        contentText.text = data.Content;
-        likeCountText.text = data.LikeCount.ToString();
+
+        //// 본문 바인딩
+        //authorNameText.text = data.AuthorName;
+        //timeInfoText.text = data.TimeInfo;
+        //contentText.text = data.Content;
+        //likeCountText.text = data.LikeCount.ToString();
 
         // 댓글 리셋
         ClearComments();

@@ -37,11 +37,11 @@ public class BulletinBoardPanel : BasePanel
     private void LoadAndDisplayPosts()
     {
         // TODO: 이 부분에 FirebaseService.LoadAllPostsAsync() 호출 등으로 데이터를 가져오기
-        List<PostData> posts = new List<PostData>
+        List<Post> posts = new List<Post>
         {
           // 임시 더미 데이터
-          new PostData { PostId="1", AuthorName="Alice", TimeInfo="1h 전", Content="첫 번째 글입니다.", LikeCount=5, CommentCount=2 },
-          new PostData { PostId="2", AuthorName="Bob",   TimeInfo="2h 전", Content="두 번째 글입니다.", LikeCount=3, CommentCount=1 },
+          new Post("1", "제목1", "첫 번째 글입니다.", "Alice"),
+          new Post("2", "제목2", "두 번째 글입니다.", "Bob"),
         };
 
         //  화면 갱신
@@ -53,7 +53,7 @@ public class BulletinBoardPanel : BasePanel
             var go = Instantiate(postItemPrefab, _postListContent);
             var ctrl = go.GetComponent<PostItemController>();
             if (ctrl != null)
-                ctrl.Setup(data);
+                ctrl.Setup(data.ToDto());
             else
                 Debug.LogWarning("[BulletinBoardPanel] PostItemController가 없음!");
             _spawnedItems.Add(go);

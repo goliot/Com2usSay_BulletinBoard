@@ -9,7 +9,9 @@ public class PostDTO
     public readonly string Content;
     public readonly DateTime CreatedAt;
     public readonly List<Comment> CommentList;
+    public int CommentCount => CommentList.Count;
     public readonly Like Like;
+    public int LikeCount => Like.LikeCount;
 
     public PostDTO(Post post)
     {
