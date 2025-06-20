@@ -41,7 +41,7 @@ public class LoginPanel : BasePanel
         if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
         {
             loginButton.interactable = false;
-            UIManager.Instance.ShowDefaultPanel();
+            UIManagerFuck.Instance.ShowDefaultPanel();
         }
         else
         {
@@ -65,6 +65,6 @@ public class LoginPanel : BasePanel
 
     private void OnRegisterClicked()
     {
-        UIManager.Instance.OpenPanel("Register");
+        UIManagerFuck.Instance.OpenPanel("Register");
     }
 }

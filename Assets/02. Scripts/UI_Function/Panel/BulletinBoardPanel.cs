@@ -28,8 +28,8 @@ public class BulletinBoardPanel : BasePanel
         _writeButton = root.Find("Button_Write").GetComponent<Button>();
         _sidePanelButton = root.Find("Button_SidePanelOpen").GetComponent<Button>();
 
-        _writeButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("Panel_WritePost"));
-        _sidePanelButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("Panel_SidePanel"));
+        _writeButton.onClick.AddListener(() => UIManagerFuck.Instance.OpenPanel("Panel_WritePost"));
+        _sidePanelButton.onClick.AddListener(() => UIManagerFuck.Instance.OpenPanel("Panel_SidePanel"));
 
         _isInitialized = true;
     }

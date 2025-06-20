@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManagerFuck : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
+    public static UIManagerFuck Instance { get; private set; }
 
     [Header("UI Root (Canvas) - Assign your Canvas Transform here")]
     [Tooltip("Instantiate할 패널의 부모로 사용할 Transform (Canvas)")]

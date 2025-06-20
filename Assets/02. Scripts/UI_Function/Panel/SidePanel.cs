@@ -22,9 +22,9 @@ public class SidePanel : BasePanel
 
     private void Initialize()
     {
-        _backButton.onClick.AddListener(() => UIManager.Instance.ClosePanel());
-        _logOutButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("Login"));
-        _recentPostButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("RecentPost"));
+        _backButton.onClick.AddListener(() => UIManagerFuck.Instance.ClosePanel());
+        _logOutButton.onClick.AddListener(() => UIManagerFuck.Instance.OpenPanel("Login"));
+        _recentPostButton.onClick.AddListener(() => UIManagerFuck.Instance.OpenPanel("RecentPost"));
 
         _isInitialized = true;
     }

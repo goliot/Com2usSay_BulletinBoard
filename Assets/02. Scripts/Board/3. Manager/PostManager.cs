@@ -20,6 +20,13 @@ public class PostManager : Singleton<PostManager>
         Debug.Log($"Post created: {newpost.PostId}, Title: {newpost.Title}, Author: {newpost.AuthorId}");
     }
 
+    public async Task<PostDTO> GetPost(string postId)
+    {
+        PostDTO post = await _postRepository.GetPost(postId);
+
+        return post;
+    }
+
     public async Task UpdatePost(string content)
     {
         if (string.IsNullOrEmpty(CurrentPost.PostId))

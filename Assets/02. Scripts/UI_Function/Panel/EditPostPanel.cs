@@ -38,7 +38,7 @@ public class EditPostPanel : BasePanel
         if (_postContentInput == null) Debug.LogError("[EditPostPanel] _postContentInput 누락");
         if (_imageInsertButton == null) Debug.LogError("[EditPostPanel] _imageInsertButton 누락");
 
-        _backButton.onClick.AddListener(() => { UIManager.Instance.ClosePanel(); });
+        _backButton.onClick.AddListener(() => { UIManagerFuck.Instance.ClosePanel(); });
 
         _commitButton.onClick.AddListener(OnCommitClicked);
 
@@ -60,6 +60,6 @@ public class EditPostPanel : BasePanel
         Debug.Log($"Saving post: {content}");
 
         // 저장 후 기본 게시판으로 돌아가기
-        UIManager.Instance.ShowDefaultPanel();
+        UIManagerFuck.Instance.ShowDefaultPanel();
     }
 }

@@ -57,8 +57,8 @@ public class RegisterPanel : BasePanel
         if (registerResult.Success)
         {
             // 회원가입 성공 시
-            UIManager.Instance.ClosePanel();            // 현재 Register 패널 닫고
-            UIManager.Instance.OpenPanel("Login");   // Login 화면으로 이동
+            UIManagerFuck.Instance.ClosePanel();            // 현재 Register 패널 닫고
+            UIManagerFuck.Instance.OpenPanel("Login");   // Login 화면으로 이동
         }
         else
         {
@@ -71,6 +71,6 @@ public class RegisterPanel : BasePanel
 
     private void OnCancelClicked()
     {
-        UIManager.Instance.ClosePanel();
+        UIManagerFuck.Instance.ClosePanel();
     }
 }

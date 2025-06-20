@@ -9,29 +9,33 @@ public class CommentManager : Singleton<CommentManager>
 
     private CommentRepository _repository = new CommentRepository();
 
+
     public async Task AddComment(Post post, CommentDTO comment)
     {
         if (post == null || comment == null)
         {
-            Debug.LogError("PostDTO ¶Ç´Â CommentDTO°¡ nullÀÔ´Ï´Ù.");
+            Debug.LogError("PostDTO ë˜ëŠ” CommentDTOê°€ nullì…ë‹ˆë‹¤.");
             return;
         }
 
         await _repository.AddComment(post, comment);
-        Debug.Log($"´ñ±Û Ãß°¡ ¿Ï·á - PostId: {post.PostId}");
+        Debug.Log($"ëŒ“ê¸€ ì¶”ê°€ ì™„ë£Œ - PostId: {post.PostId}");
         OnCommentChanged?.Invoke();
     }
 
+    /// <summary>
+    /// ì„œë²„ì—ì„œ í•´ë‹¹ ê¸€ì˜ ëŒ“ê¸€ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
+    /// </summary>
     public async Task<List<CommentDTO>> GetComments(PostDTO post)
     {
         if (post == null)
         {
-            Debug.LogError("PostDTO°¡ nullÀÔ´Ï´Ù.");
+            Debug.LogError("PostDTOê°€ nullì…ë‹ˆë‹¤.");
             return new List<CommentDTO>();
         }
 
         var comments = await _repository.GetComments(post);
-        Debug.Log($"´ñ±Û ¸ñ·Ï Á¶È¸ ¿Ï·á - Count: {comments.Count}");
+        Debug.Log($"ëŒ“ê¸€ ëª©ë¡ ì¡°íšŒ ì™„ë£Œ - Count: {comments.Count}");
         return comments;
     }
 
@@ -39,12 +43,12 @@ public class CommentManager : Singleton<CommentManager>
     {
         if (post == null || comment == null)
         {
-            Debug.LogError("PostDTO ¶Ç´Â CommentDTO°¡ nullÀÔ´Ï´Ù.");
+            Debug.LogError("PostDTO ë˜ëŠ” CommentDTOê°€ nullì…ë‹ˆë‹¤.");
             return;
         }
 
         await _repository.DeleteComment(post, comment);
-        Debug.Log($"´ñ±Û »èÁ¦ ¿Ï·á - CommentId: {comment.CommentId}");
+        Debug.Log($"ëŒ“ê¸€ ì‚­ì œ ì™„ë£Œ - CommentId: {comment.CommentId}");
         OnCommentChanged?.Invoke();
     }
 }

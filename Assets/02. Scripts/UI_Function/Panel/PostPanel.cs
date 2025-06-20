@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.Android.Gradle.Manifest;
 
 public class PostPanel : BasePanel
 {
@@ -59,28 +60,33 @@ public class PostPanel : BasePanel
         if (commentSubmitButton == null) Debug.LogError("[PostPanel] commentSubmitButton 누락");
 
         // 버튼 리스너
-        backButton.onClick.AddListener(() => UIManager.Instance.ClosePanel());
-        editButton.onClick.AddListener(() => UIManager.Instance.OpenPanel("Panel_EditPost", _currentPostId));
+        backButton.onClick.AddListener(() => UIManagerFuck.Instance.ClosePanel());
+        editButton.onClick.AddListener(() => UIManagerFuck.Instance.OpenPanel("Panel_EditPost", _currentPostId));
         likeButton.onClick.AddListener(OnLikeClicked);
         commentSubmitButton.onClick.AddListener(OnCommentSubmitClicked);
 
         _isInitialized = true;
     }
 
-    private void LoadAndDisplayPost(string postId)
+    private async void LoadAndDisplayPost(string postId)
     {
         // TODO: postId로 실제 데이터 로드
-
-
-        //// 본문 바인딩
-        //authorNameText.text = data.AuthorName;
-        //timeInfoText.text = data.TimeInfo;
-        //contentText.text = data.Content;
-        //likeCountText.text = data.LikeCount.ToString();
+        PostDTO data = await PostManager.Instance.GetPost(postId);
 
         // 댓글 리셋
         ClearComments();
         // (실제 로드는 TODO)
+        List<CommentDTO> comments = await CommentManager.Instance.GetComments(data);
+        Post post = new Post(data);
+        post.SetComment(comments.ConvertAll((item) => item.ToEntity()));
+
+        //// 본문 바인딩
+        authorNameText.text = post.AuthorId;
+        timeInfoText.text = post.CreatedAt.ToString();
+        contentText.text = post.Content;
+        likeCountText.text = post.LikeCount.ToString();
+
+        // TODO : 댓글 생성
     }
 
     private void OnLikeClicked()
