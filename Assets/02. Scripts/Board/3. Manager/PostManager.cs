@@ -59,7 +59,7 @@ public class PostManager : Singleton<PostManager>
         return true;
     }
 
-    public async Task DeletePost()
+    public async Task<bool> DeletePost()
     {
         if (string.IsNullOrEmpty(CurrentPost.PostId))
         {
@@ -69,10 +69,13 @@ public class PostManager : Singleton<PostManager>
         string requesterId = AccountManager.Instance.MyAccount.Email;
         if (CurrentPost == null || CurrentPost.AuthorId != requesterId)
         {
-            throw new Exception("You do not have permission to update this post.");
+            return false;
+            //throw new Exception("You do not have permission to update this post.");
         }
         await _postRepository.DeletePost(CurrentPost.PostId);
         Debug.Log($"Post deleted: {CurrentPost.PostId}");
+
+        return true;
     }
     public async Task DeletePost(string postId)
     {

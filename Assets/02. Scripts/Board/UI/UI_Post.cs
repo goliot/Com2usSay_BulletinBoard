@@ -17,6 +17,8 @@ public class UI_Post : UI_PopUp
     [SerializeField] private TextMeshProUGUI ContentText;
     [SerializeField] private TextMeshProUGUI LikeCountText;
 
+    [SerializeField] private GameObject EditPanelPopup;
+
     [Header("# New Comment")]
     [SerializeField] private TMP_InputField CommentInputField; // 작성하는곳
 
@@ -79,9 +81,21 @@ public class UI_Post : UI_PopUp
         AddCommentItemUI(comment.ToDto());
     }
 
+    public async void OnClickDeletePost()
+    {
+        if(!await PostManager.Instance.DeletePost())
+        {
+            EditPanelPopup.SetActive(false);
+        }
+        else
+        {
+            UIManager.Instance.OpenPanel(EUIPanelType.BulletinBoard);
+        }
+    }
+
     public void SetPost()
     {
-        TitleText.text = CurrentPost.Title;
+        TitleText.text = "상세 보기";
         AuthorIdText.text = CurrentPost.AuthorId;
         CreatedAtText.text = CurrentPost.CreatedAt.ToDateTime().ToString("yyyy년 M월 d일 tt HH:mm", new System.Globalization.CultureInfo("ko-KR"));
         ContentText.text = CurrentPost.Content;
@@ -97,7 +111,7 @@ public class UI_Post : UI_PopUp
         _commentItems.Add(item);
     }
 
-    public void DeleteComment(CommentDTO comment)
+    public void OnClickDeleteComment(CommentDTO comment)
     {
         string targetId = comment.CommentId;
 
