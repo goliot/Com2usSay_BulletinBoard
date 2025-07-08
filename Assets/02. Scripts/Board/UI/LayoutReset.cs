@@ -12,6 +12,16 @@ public class LayoutReset : MonoBehaviour
         _rectTransform = (RectTransform)transform;
     }
 
+    private void Start()
+    {
+        StartCoroutine(DelayedRebuild());
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(DelayedRebuild());
+    }
+
     private void OnTransformChildrenChanged()
     {
         StartCoroutine(DelayedRebuild());
